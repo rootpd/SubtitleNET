@@ -3,10 +3,11 @@ git@github.com:rootpd/SubtitleNET.git
 
 Info:
 =====
-Program na zaklade video suboru najde prisluchajuce titulky, t.j. mali by sediet, a ak nesedia, tak je to chyba uploadera titulkov.
-Titulky mozno vyhladavat aj bez video suboru, aj ked neviem, na co by niekto vobec daco take robil. :)
-Program je sireny "as is", nechodte za mnou, ak vam to nieco odserie, boli ste varovani. Ono tam fakt nic hrozne nie je, ale pre istotu. :)
-Vsetka komunikacia je len so serverom OpenSubtitles.org, ktory poskytol aj API, za co dakujem. Ak by nieco neslo, tak checknite, ci vobec bezi web.
+- Program na zaklade video suboru najde prisluchajuce titulky, t.j. mali by sediet, a ak nesedia, tak je to chyba uploadera titulkov.
+- Titulky mozno vyhladavat aj bez video suboru, aj ked neviem, na co by niekto vobec daco take robil. :)
+- Program je sireny "as is", nechodte za mnou, ak vam to nieco odserie, boli ste varovani. Ono tam fakt nic hrozne nie je, ale pre istotu. :)
+- Vsetka komunikacia je len so serverom OpenSubtitles.org, ktory poskytol aj API, za co dakujem. Ak by nieco neslo, tak checknite, ci vobec bezi web.
+
 (... a v podstate je to to iste co uz je v bsplayeri, len na to teraz nepotrebujete 20mb player so spywareom ;) ...)
 
 Known Issues:
@@ -34,7 +35,7 @@ v0.9.5
 pridane dalsie informacie vo vysledkoch vyhladavania
 zmenena pevna .srt pripona titulkov na originalnu (nie je dobre spoliehat sa na prehravace)
 opravene null-sized okno a pridana aktualna akcia
-pri non-hash searchi pridane automaticke stiahnutie vsetkych CD (pozor, buggy, spolieha sa na to, ze CD v zozname nasledujú za sebou!!)
+pri non-hash searchi pridane automaticke stiahnutie vsetkych CD (pozor, buggy, spolieha sa na to, ze CD v zozname nasleduju za sebou!!)
 
 v0.9.4
 mensie bugfixy
