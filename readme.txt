@@ -1,6 +1,10 @@
 SubtitleNET v0.9.5
 git@github.com:rootpd/SubtitleNET.git
 
+DOWNLOAD:
+=========
+Pre standardne pouzivanie staci stiahnut subor subtitlenet.jar a spustit (nerozbalovat, spustit!)
+
 Info:
 =====
 - Program na zaklade video suboru najde prisluchajuce titulky, t.j. mali by sediet, a ak nesedia, tak je to chyba uploadera titulkov.
@@ -18,7 +22,7 @@ Known Issues:
 
 Additional:
 ===========
-Viaceri ste mi vraveli, ze ho budete chciet, tak aspon pomôzte pri testovani.
+Viaceri ste mi vraveli, ze ho budete chciet, tak aspon pomozte pri testovani.
 Na spravne fungovanie je potrebna najnovsia verzia Javy (Java Runtime Enviroment) - http://java.com/en/download/index.jsp
 Samotny .jar, ktory stiahnete je uz spustitelny, netreba ho rozbalovat
 A vsetky bugy hlaste:
