@@ -2,44 +2,49 @@ SubtitleNET v0.9.6
 git@github.com:rootpd/SubtitleNET.git
 
 Info:
-Program na základe video súboru nájde prislúchajúce titulky, t.j. mali by sedie, a ak nesedia, tak je to chyba uploadera titulkov.
-Titulky mono vyh¾adáva aj bez video súboru, aj keï neviem, na èo by niekto vôbec daèo také robil. :)
-Program je šírenı "as is", nechoïte za mnou, ak vám to nieèo odserie, boli ste varovaní. Ono tam fakt niè hrozné nie je, ale pre istotu. :)
-Všetka komunikácia je len so serverom OpenSubtitles.org, ktorı poskytol aj API, za èo ïakujem. Ak by nieèo nešlo, tak checknite, èi vôbec beí web.
-(... a v podstate je to to isté èo u je v bsplayeri, len na to teraz nepotrebujete 20mb player so spywareom ;) ...)
+=====
+Program na zaklade video suboru najde prisluchajuce titulky, t.j. mali by sediet, a ak nesedia, tak je to chyba uploadera titulkov.
+Titulky mozno vyhladavat aj bez video suboru, aj ked neviem, na co by niekto vobec daco take robil. :)
+Program je sireny "as is", nechodte za mnou, ak vam to nieco odserie, boli ste varovani. Ono tam fakt nic hrozne nie je, ale pre istotu. :)
+Vsetka komunikacia je len so serverom OpenSubtitles.org, ktory poskytol aj API, za co dakujem. Ak by nieco neslo, tak checknite, ci vobec bezi web.
+(... a v podstate je to to iste co uz je v bsplayeri, len na to teraz nepotrebujete 20mb player so spywareom ;) ...)
 
 Known Issues:
-- pri viac CD filmoch treba osobitne h¾ada a sahova titulky pre kadé CD. (ahajte HD, nebudete ma takéto problémy)
-- pri textovom vyh¾adávaní seriálov to trvá strašne dlho kvôli poètu vısledkov (asi), nepouíval by som radšej, h¾adajte pre konkrétny súbor.
-- stále nie je monos zruši vyh¾adávanie uprostred (neviem, èi niekedy vôbec pribudne, nie je to moc nevyhnutné)
+=============
+- pri viac CD filmoch treba osobitne hladat a stahovat titulky pre kazde CD. (tahajte HD, nebudete mat taketo problemy)
+- pri textovom vyhladavani serialov to trva strasne dlho kvoli poctu vysledkov (asi), nepouzival by som radsej, hladajte pre konkretny subor.
+- stale nie je moznost zrusit vyhladavanie uprostred (neviem, ci niekedy vobec pribudne, nie je to moc nevyhnutne)
 
 Additional:
-Viacerí ste mi vraveli, e ho budete chcie, tak aspoò pomôte pri testovaní.
-Na správne fungovanie je potrebná najnovšia verzia Javy (Java Runtime Enviroment), sahujte TU.
-Samotnı .jar, ktorı stiahnete je u spustite¾nı, netreba ho rozba¾ova
-A všetky bugy hláste:
+===========
+Viaceri ste mi vraveli, ze ho budete chciet, tak aspon pomôzte pri testovani.
+Na spravne fungovanie je potrebna najnovsia verzia Javy (Java Runtime Enviroment) - http://java.com/en/download/index.jsp
+Samotny .jar, ktory stiahnete je uz spustitelny, netreba ho rozbalovat
+A vsetky bugy hlaste:
   fiitkar: dulacka
   mail: dulacka@gmail.com
   facebook: facebook.com/dulacka
   twitter: @rootpd
 
-Program je open-source, pouívajte ako chcete. Ak máte nejakı dobrı nápad, forknite si projekt a potom pošlite patch :).
+Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forknite si projekt a potom poslite patch :).
 
 Changelog: 
-v0.9.6
-zmenená pevná .srt prípona titulkov na originálnu (nie je dobré spolieha sa na prehrávaèe)
-opravené null-sized okno a pridaná aktuálna akcia
-pri non-hash searchi pridané automatické stiahnutie všetkıch CD (pozor, buggy, spolieha sa na to, e CD v zozname nasledujú za sebou!!)
-pridané ïalšie informácie vo vısledkoch vyh¾adávania
+==========
+v0.9.5
+pridane dalsie informacie vo vysledkoch vyhladavania
+zmenena pevna .srt pripona titulkov na originalnu (nie je dobre spoliehat sa na prehravace)
+opravene null-sized okno a pridana aktualna akcia
+pri non-hash searchi pridane automaticke stiahnutie vsetkych CD (pozor, buggy, spolieha sa na to, ze CD v zozname nasledujú za sebou!!)
 
 v0.9.4
-menšie bugfixy
+mensie bugfixy
 
 v0.9
-pridané logovanie a ošetrovanie exceptionov
-prihlasovanie na API server prebieha na pozadí hneï po spustení programu (rıchlejšie vyh¾adávanie)
-upravenı vıpis nájdenıch titulkov
+pridane logovanie a osetrovanie exceptionov
+prihlasovanie na API server prebieha na pozadi hned po spusteni programu (rychlejsie vyhladavanie)
+upraveny vypis najdenych titulkov
 
 v0.8.0.1
-boli problémy s .jarom, niektorım ho nechcelo spusti, toto by to malo vyrieši
-(created by pd as a VPPJ project)
+boli problemy s .jarom, niektorym ho nechcelo spustit, toto by to malo vyriesit
+
+(created by rootpd as a VPPJ project)
