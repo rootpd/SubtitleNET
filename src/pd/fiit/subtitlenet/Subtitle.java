@@ -13,6 +13,7 @@ public final class Subtitle {
 	private String subDownloadLink;
 	private String subFileName;
 	private String targetFolder;
+	private String releaseName;
 	
 	public String getMovieName() { 
 		return movieName; 
@@ -100,5 +101,13 @@ public final class Subtitle {
 	
 	public void setSubFileName(String subFileName) {
 		this.subFileName = subFileName;
+	}
+	
+	public String getReleaseName() {
+		return releaseName; 
+	}
+	
+	public void setReleaseName(String releaseName) {
+		this.releaseName = releaseName;
 	}
 }

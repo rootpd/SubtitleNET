@@ -129,13 +129,24 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 		}		
 
 		for (Subtitle sub : subtitles) { // node structure
-			subtitleListModel.addElement( 
-					sub.getMovieName() + " ("
-					+ sub.getMovieYear() + ") | "
-					+ sub.getLanguageName() + " | "
-					+ sub.getSubDlCount() + " DLs | "
-					+ "DISC " + sub.getSubActualCD() + "/" + sub.getSubSumCD() + " | "
-					+ sub.getSubAddDate());
+			String release = "";
+			
+			if (sub.getReleaseName().length() > 2) {
+				release = sub.getReleaseName();
+				if (release.indexOf(":") != -1)
+					release = release.substring(release.indexOf(":")+1);
+			}
+			
+			String subtitleInfo = 
+				sub.getMovieName() + " (" + 
+				sub.getMovieYear() + ") | " +
+				sub.getLanguageName() + " | " +
+				sub.getSubDlCount() + " DLs | " +
+				"DISC " + sub.getSubActualCD() + "/" + sub.getSubSumCD() + " | " +
+				sub.getSubAddDate() + " | " + 
+				"rls: " + release;
+				
+			subtitleListModel.addElement(subtitleInfo);
 			sub.setTargetFolder(gui.getSelectedFolder());
 			
 			try { // mandatory for successful repaint of jlist with results (dont have a clue why)
@@ -183,6 +194,8 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			sub.setSubDlCount(handler.getVariableValue("SubDownloadsCnt"));
 			sub.setSubDownloadLink(handler.getVariableValue("SubDownloadLink"));
 			sub.setSubFileName(handler.getVariableValue("SubFileName"));
+			sub.setByteSize(handler.getVariableValue("MovieByteSize"));
+			sub.setReleaseName(handler.getVariableValue("MovieReleaseName"));
 			
 			if (sub.getMovieName() != null) 
 				subtitles.add(sub);
