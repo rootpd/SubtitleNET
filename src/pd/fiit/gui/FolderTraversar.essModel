@@ -1,0 +1,18 @@
+[Box:  - ::pd.fiit.gui]
+X=430
+Y=40
+
+[Box:  - ::pd.fiit.reusable]
+X=20
+Y=40
+
+[Box:  - ::pd.fiit.subtitlenet]
+X=225
+Y=40
+
+[Diagram: ]
+OffsetX=0
+OffsetY=0
+Visibility=0
+ShowAssoc=1
+

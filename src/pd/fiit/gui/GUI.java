@@ -1,0 +1,420 @@
+package pd.fiit.gui;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.UIManager;
+
+import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
+
+import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.JList;
+import javax.swing.JButton;
+
+import pd.fiit.subtitlenet.DownloadHandler;
+import pd.fiit.subtitlenet.LanguageHandler;
+import pd.fiit.subtitlenet.LogInHandler;
+import pd.fiit.subtitlenet.SearchHandler;
+import pd.fiit.subtitlenet.Subtitle;
+import pd.fiit.subtitlenet.Main;
+
+/** main GUI */
+public class GUI extends JFrame {
+	private static final long serialVersionUID = 1L;
+	private DefaultListModel fileListModel = null;
+	private DefaultListModel subtitleListModel = null;
+	private JPanel jContentPane = null;
+	private JScrollPane treeScrollPane = null;
+	private JTree folderTree = null;
+	private JList fileList = null;
+	private JList subtitleList = null;
+	private JComboBox languageCombo = null;
+	private JTextField inputSearch = null;
+	private JCheckBox inputCheck = null;
+	private JScrollPane fileListScrollPane = null;
+	private JScrollPane subtitleListScrollPane = null;
+	private JButton searchButton = null;
+	private JButton downloadButton = null;
+	
+	private WorkingDialog working = null;
+	private ExecutorService exec = Executors.newCachedThreadPool();
+	private String selectedFolder = null;
+	private List<Subtitle> subtitles = null;
+	private Future<List<Subtitle>> searchThread = null;
+	private LanguageHandler language = null;
+	private String token = null;
+	private Future<String> logInThread = null;
+	private static final Logger logger = Logger.getLogger(GUI.class.getName());
+
+	public GUI() {
+		super();
+		initialize();
+	}
+
+	/** initialization of application window */
+	private void initialize() {
+		this.setSize(613, 440);
+		this.setContentPane(getJContentPane());
+		this.setTitle("SubtitleNET " + new Main().getVersion());
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/img/movieIcon.png")));
+		this.setResizable(false);
+		this.setVisible(true);
+		
+		Callable<String> task = new LogInHandler();
+		logInThread = exec.submit(task);
+	}
+
+	/** add components into application window */
+	private JPanel getJContentPane() {
+		if (jContentPane == null) {
+			jContentPane = new JPanel();
+			jContentPane.setLayout(null);
+			jContentPane.add(getTreeScrollPane(), null);
+			jContentPane.add(getFileListScrollPane(), null);
+			jContentPane.add(getSubtitleListScrollPane(), null);
+			jContentPane.add(getSearchButton(), null);
+			jContentPane.add(getDownloadButton(), null);
+			jContentPane.add(getLanguageCombo(), null);
+			jContentPane.add(getInputSearch(), null);
+			jContentPane.add(getInputCheck(), null);
+		}
+		return jContentPane;
+	}
+	
+	/** initialization of checkbox toggling custom (not file) search */
+	public JCheckBox getInputCheck() {
+		if (inputCheck == null) {
+			inputCheck = new JCheckBox();
+			inputCheck.setBounds(new Rectangle(4, 220, 21, 23));
+		}
+		
+		inputCheck.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					inputSearch.setText("");
+					inputSearch.setEnabled(true);
+					fileList.setEnabled(false);
+					folderTree.setEnabled(false);
+				} else if (e.getStateChange() == ItemEvent.DESELECTED) {
+					inputSearch.setText("Search subtitles without file.");
+					inputSearch.setEnabled(false);
+					fileList.setEnabled(true);
+					folderTree.setEnabled(true);
+				}
+			}
+			
+		});
+		
+		return inputCheck;
+	}
+	
+	/** initialization of custom search input field */
+	public JTextField getInputSearch() {
+		if (inputSearch == null) {
+			inputSearch = new JTextField();
+			inputSearch.setBounds(new Rectangle(28, 222, 237, 19));
+			inputSearch.setText("Search subtitles without file.");
+			inputSearch.setEnabled(false);
+		}
+		return inputSearch;
+	}
+
+	/** initialization of language combo box, handler in LanguageHandler class */
+	private JComboBox getLanguageCombo() {
+		if (languageCombo == null) {
+			this.language = new LanguageHandler();
+			String[] langlist = getLanguage().getLanguageNames();
+			
+			languageCombo = new JComboBox(langlist);
+			languageCombo.setSelectedIndex(1);
+			languageCombo.setBounds(new Rectangle(275, 220, 120, 22));
+		}
+		
+		return languageCombo;
+	}
+
+	/** constructor for treeScrollPane */
+	private JScrollPane getTreeScrollPane() {
+		if (treeScrollPane == null) {
+			treeScrollPane = new JScrollPane();
+			treeScrollPane.setBounds(new Rectangle(6, 8, 260, 202));
+			treeScrollPane.setViewportView(getFolderTree());
+		}
+		return treeScrollPane;
+	}
+
+	/** gets tree component and sets the selection listener */
+	private JTree getFolderTree() {
+		if (folderTree == null) {
+			final DefaultMutableTreeNode root = new DefaultMutableTreeNode("Computer"); // default actions
+			File[] roots = File.listRoots();
+			
+			for (File drive : roots) { // add drive letters
+				DefaultMutableTreeNode child = new DefaultMutableTreeNode(drive);
+				root.add(child);
+			}
+			
+			renderTree(root); // just basic functionality and visual outcome
+			
+			folderTree.addTreeSelectionListener(new TreeSelectionListener() { // listener
+				public void valueChanged(TreeSelectionEvent e) {
+			    	DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+			    		folderTree.getLastSelectedPathComponent(); // get selected node
+			    	
+			    	if (folderTree == null) return;
+			    	TreeHandler treeHandle = new TreeHandler(folderTree, fileListModel);
+
+			    	selectedFolder = treeHandle.getFullFolderPath(e); // get path of node
+			    	treeHandle.getFolderComponents(node, getSelectedFolder()); // traverse it
+			    	treeHandle.updateFolderTree(root); // finally update the tree
+			    	if (fileListModel.size() > 0) fileList.setSelectedIndex(0);
+			    }
+			});
+		}
+		
+		return folderTree;
+	}
+
+	/** sets basic functionality and visual outcome of tree */
+	private void renderTree(final DefaultMutableTreeNode root) {
+		UIManager.put("Tree.expandedIcon",  new ImageIcon("")); // disable collapse and expansion via + -
+		UIManager.put("Tree.collapsedIcon", new ImageIcon(""));
+		
+		folderTree = new JTree(root);
+		
+		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); // set icons (same for leaves and folders)
+		ImageIcon treeIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/img/folderIcon.png")));
+		
+		renderer.setLeafIcon(treeIcon);
+		renderer.setClosedIcon(treeIcon);
+		renderer.setOpenIcon(treeIcon);
+		folderTree.setCellRenderer(renderer);
+	}
+
+	/** creates listbox for found video files and adds selection listener */
+	public JList getFileList() {
+		if (fileList == null) {
+			fileListModel = new DefaultListModel();
+			fileList = new JList(fileListModel);
+		}
+		
+		fileList.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if (fileList.getSelectedIndex() == -1 && inputCheck.getSelectedObjects() == null) {
+						JOptionPane.showMessageDialog(null, "You haven't selected any file.");
+						return;
+					}
+				
+					initiateSearch();
+				}
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			
+		});
+		
+		return fileList;
+	}
+	
+	/** constructor of listbox for found subtitles */
+	private JList getSubtitleList() {
+		if (subtitleList == null) {
+			this.subtitleListModel = new DefaultListModel();
+			subtitleList = new JList(getSubtitleListModel());
+		}
+		
+		subtitleList.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if (getSubtitleListModel().size() == 0 || subtitleList.getSelectedIndex() == -1) {
+						JOptionPane.showMessageDialog(null, "Nothing to download (no subtitles were found or no search performed).", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					initiateDownload();
+				}
+			}
+
+			@Override public void mouseEntered(MouseEvent e) {}
+			@Override public void mouseExited(MouseEvent e) {}
+			@Override public void mousePressed(MouseEvent e) {}
+			@Override public void mouseReleased(MouseEvent e) {}
+			
+		});
+		
+		return subtitleList;
+	}
+
+	/** constructor for fileListScrollPane */
+	private JScrollPane getFileListScrollPane() {
+		if (fileListScrollPane == null) {
+			fileListScrollPane = new JScrollPane();
+			fileListScrollPane.setBounds(new Rectangle(275, 8, 311, 202));
+			fileListScrollPane.setViewportView(getFileList());
+		}
+		return fileListScrollPane;
+	}
+	
+	/** constructor for subtitleListScrollPane */
+	private JScrollPane getSubtitleListScrollPane() {
+		if (subtitleListScrollPane == null) {
+			subtitleListScrollPane = new JScrollPane();
+			subtitleListScrollPane.setBounds(new Rectangle(6, 255, 580, 100));
+			subtitleListScrollPane.setViewportView(getSubtitleList());
+		}
+		return subtitleListScrollPane;
+	}
+
+	/** creates search button and sets mouse listener */
+	private JButton getSearchButton() {
+		if (searchButton == null) {
+			searchButton = new JButton("Search subtitles");
+			searchButton.setBounds(new Rectangle(406, 219, 180, 24));
+		}
+		
+		searchButton.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (fileList.getSelectedIndex() == -1 && inputCheck.getSelectedObjects() == null) {
+					JOptionPane.showMessageDialog(null, "You haven't selected any file.");
+					return;
+				}
+				initiateSearch();
+			}
+
+			@Override public void mouseEntered(MouseEvent e) {}
+			@Override public void mouseExited(MouseEvent e) {}
+			@Override public void mousePressed(MouseEvent e) {}
+			@Override public void mouseReleased(MouseEvent e) {}
+			
+		});
+		
+		return searchButton;
+	}
+	
+	/** initialization of download button with listener */
+	private JButton getDownloadButton() {
+		if (downloadButton == null) {
+			downloadButton = new JButton("Download selected subtitles");
+			downloadButton.setBounds(new Rectangle(383, 364, 203, 26));
+		}
+		
+		downloadButton.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (getSubtitleListModel().size() == 0 || subtitleList.getSelectedIndex() == -1) {
+					JOptionPane.showMessageDialog(null, "Nothing to download (no subtitles were found or no search performed).", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+				initiateDownload();
+			}
+
+			@Override public void mouseEntered(MouseEvent e) {}
+			@Override public void mouseExited(MouseEvent e) {}
+			@Override public void mousePressed(MouseEvent e) {}
+			@Override public void mouseReleased(MouseEvent e) {}
+			
+		});
+		
+		return downloadButton;
+	}
+	
+	/** runs search thread */
+	private void initiateSearch() {	
+		working = new WorkingDialog(this);
+		working.getCancelButton().setEnabled(false);
+		working.setVisible(true);
+		
+		getLanguage().setSelectedIndex(languageCombo.getSelectedIndex()); // get selected language
+		Callable<List<Subtitle>> task = new SearchHandler(this);
+		
+		searchThread = exec.submit(task);
+//		working.setThread(searchThread);
+	}
+
+	/** checks for input and starts download thread */
+	private void initiateDownload() {
+		try {
+			subtitles = getSearchThread().get(); // waiting for subtitles
+		} catch (InterruptedException e) {
+			logger.severe("subtitle thread interupted.");
+		} catch (ExecutionException e) {
+			logger.warning("cannot obtain subtitle thread result.");
+		}
+		
+		@SuppressWarnings("unchecked")
+		Callable<String> task = new DownloadHandler(subtitles, subtitleList.getSelectedIndex());
+		exec.submit(task);				
+	}
+
+	public String getSelectedFolder() {
+		return selectedFolder;
+	}
+
+	public DefaultListModel getSubtitleListModel() {
+		return subtitleListModel;
+	}
+
+	public LanguageHandler getLanguage() {
+		return language;
+	}
+
+	public WorkingDialog getWorking() {
+		return working;
+	}
+
+	public Future<String> getLogInThread() {
+		return logInThread;
+	}
+
+	public Future<List<Subtitle>> getSearchThread() {
+		return searchThread;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
+	}
+} 
