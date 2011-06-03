@@ -29,12 +29,12 @@ public final class DownloadHandler implements Callable {
 	public String call() {
 		int sumCD = Integer.parseInt(subtitles.get(index).getSubSumCD());
 		
-		if (sumCD == 1)
-			downloadSubtitle(subtitles.get(index), false);
-		else {
+		if (sumCD != 1 && subtitles.get(0).getTargetFolder() == null)
 			for (int i=0; i<sumCD; i++) {
 				downloadSubtitle(subtitles.get(index+i), true);
 			}
+		else {
+			downloadSubtitle(subtitles.get(index), false);
 		}
 		
 		return "OK";
