@@ -194,7 +194,6 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			sub.setSubDlCount(handler.getVariableValue("SubDownloadsCnt"));
 			sub.setSubDownloadLink(handler.getVariableValue("SubDownloadLink"));
 			sub.setSubFileName(handler.getVariableValue("SubFileName"));
-			sub.setByteSize(handler.getVariableValue("MovieByteSize"));
 			sub.setReleaseName(handler.getVariableValue("MovieReleaseName"));
 			
 			if (sub.getMovieName() != null) 

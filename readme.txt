@@ -1,4 +1,4 @@
-SubtitleNET v0.9.6
+SubtitleNET v0.9.5
 git@github.com:rootpd/SubtitleNET.git
 
 Info:
