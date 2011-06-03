@@ -1,1 +1,0 @@
-java -Djava.util.logging.config.file=config.cfg -cp ./bin;./lib/*; pd.fiit.subtitlenet.Main 
