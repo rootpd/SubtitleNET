@@ -46,7 +46,7 @@ public final class TreeHandler {
 				".mkv", ".moov", ".mov", ".movhd", ".movie", ".movx", ".mp4", ".mpe", ".mpeg", ".mpg",
 				".mpv", ".mpv2", ".mxf", ".nsv", ".nut", ".ogg", ".ogm", ".omf", ".ps", ".qt", ".ram",
 				".rm", ".rmvb", ".swf", ".ts", ".vfw", ".vid", ".video", ".viv", ".vivo", ".vob",
-				".vro", ".wm", ".wmv", ".wmx", ".wrap", ".wvx", ".wx", ".x264", ".xvid", };
+				".vro", ".wm", ".wmv", ".wmx", ".wrap", ".wvx", ".wx", };
 		
 		fileListModel.clear();
 		for (int i=0; i<folder.files.size(); i++) {
