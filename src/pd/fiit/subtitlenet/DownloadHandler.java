@@ -49,14 +49,14 @@ public final class DownloadHandler implements Callable {
 	private String downloadSubtitle(Subtitle subtitle, boolean origFileName) {
 		String downloadLink = subtitle.getSubDownloadLink();
 		
-		String gzFileName = subtitle.getMovieName() + ".gz";
+		String gzFileName = "tmpsub.gz";
 		String targetFolder = subtitle.getTargetFolder();
 		
 		String subFileName = null;
 		if (origFileName)
 			subFileName = subtitle.getSubFileName() + "." + subtitle.getSubFormat();
 		else 
-			subFileName = subtitle.getMovieName() + "." + subtitle.getSubFormat();
+			subFileName = subtitle.getSourceFileName() + "." + subtitle.getSubFormat();
 		
 		if (targetFolder == null) {
 			if ((targetFolder = invokeSaveWindow(targetFolder)) == null)

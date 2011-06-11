@@ -14,6 +14,7 @@ public final class Subtitle {
 	private String subFileName;
 	private String targetFolder;
 	private String releaseName;
+	private String sourceFileName;
 	
 	public String getMovieName() { 
 		return movieName; 
@@ -109,5 +110,13 @@ public final class Subtitle {
 	
 	public void setReleaseName(String releaseName) {
 		this.releaseName = releaseName;
+	}
+	
+	public String getSourceFileName() {
+		return sourceFileName; 
+	}
+	
+	public void setSourceFileName(String sourceFileName) {
+		this.sourceFileName = sourceFileName.substring(0, sourceFileName.lastIndexOf("."));
 	}
 }
