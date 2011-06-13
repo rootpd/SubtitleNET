@@ -51,10 +51,11 @@ public final class TreeHandler {
 		fileListModel.clear();
 		for (int i=0; i<folder.files.size(); i++) {
 			String fileName = folder.files.get(i);
-			for (String ext : extensions) if (fileName.indexOf(ext) == (fileName.length() - ext.length())) {
-				fileListModel.add(fileListModel.getSize(), fileName);
-				break;
-			}		
+			for (String ext : extensions) 
+				if ((fileName.length() >= ext.length()) && (fileName.indexOf(ext) == (fileName.length() - ext.length()))) {
+					fileListModel.add(fileListModel.getSize(), fileName);
+					break;
+				}		
 		}
 		
 		if (fileListModel.getSize() == 0) 
