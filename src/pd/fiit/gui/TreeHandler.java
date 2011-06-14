@@ -52,7 +52,7 @@ public final class TreeHandler {
 		for (int i=0; i<folder.files.size(); i++) {
 			String fileName = folder.files.get(i);
 			for (String ext : extensions) 
-				if ((fileName.length() >= ext.length()) && (fileName.indexOf(ext) == (fileName.length() - ext.length()))) {
+				if ((fileName.length() >= ext.length()) && (fileName.lastIndexOf(ext) == (fileName.length() - ext.length()))) {
 					fileListModel.add(fileListModel.getSize(), fileName);
 					break;
 				}		
