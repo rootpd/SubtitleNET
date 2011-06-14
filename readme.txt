@@ -4,6 +4,7 @@ git@github.com:rootpd/SubtitleNET.git
 DOWNLOAD:
 =========
 Pre standardne pouzivanie staci stiahnut subor subtitlenet.jar a spustit (nerozbalovat, spustit!)
+https://github.com/rootpd/SubtitleNET/raw/master/subtitlenet.jar
 
 Info:
 =====
@@ -35,6 +36,9 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
+v0.9.6beta
+opravene rozoznavanie video pripon (vdaka martingt89)
+
 v0.9.5
 pridane dalsie informacie vo vysledkoch vyhladavania
 zmenena pevna .srt pripona titulkov na originalnu (nie je dobre spoliehat sa na prehravace)
