@@ -1,4 +1,4 @@
-SubtitleNET v0.9.5
+SubtitleNET v0.9.6beta2
 git@github.com:rootpd/SubtitleNET.git
 
 DOWNLOAD:
@@ -24,7 +24,9 @@ Known Issues:
 Additional:
 ===========
 Viaceri ste mi vraveli, ze ho budete chciet, tak aspon pomozte pri testovani.
-Na spravne fungovanie je potrebna najnovsia verzia Javy (Java Runtime Enviroment) - http://java.com/en/download/index.jsp
+Na spravne fungovanie je potrebna najnovsia verzia Javy (Java Runtime Enviroment)
+http://java.com/en/download/index.jsp
+
 Samotny .jar, ktory stiahnete je uz spustitelny, netreba ho rozbalovat
 A vsetky bugy hlaste:
   fiitkar: dulacka
@@ -36,8 +38,10 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
-v0.9.6beta
-opravene rozoznavanie video pripon (vdaka martingt89)
+v0.9.6beta2
+opravene rozoznavanie pripon videosuborov (vdaka martingt89)
+pridana moznost zmeny velkosti okna (znova vdaka martingt89)
+opravena chyba pri textovom vyhladavani
 
 v0.9.5
 pridane dalsie informacie vo vysledkoch vyhladavania
