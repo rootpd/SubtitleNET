@@ -11,7 +11,10 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 
-import java.awt.Rectangle;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -82,9 +85,7 @@ public class GUI extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/img/movieIcon.png")));
-		this.setResizable(false);
 		this.setVisible(true);
-		
 		Callable<String> task = new LogInHandler();
 		logInThread = exec.submit(task);
 	}
@@ -93,15 +94,116 @@ public class GUI extends JFrame {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(null);
-			jContentPane.add(getTreeScrollPane(), null);
-			jContentPane.add(getFileListScrollPane(), null);
-			jContentPane.add(getSubtitleListScrollPane(), null);
-			jContentPane.add(getSearchButton(), null);
-			jContentPane.add(getDownloadButton(), null);
-			jContentPane.add(getLanguageCombo(), null);
-			jContentPane.add(getInputSearch(), null);
-			jContentPane.add(getInputCheck(), null);
+			jContentPane.setLayout(new GridLayout(2, 1));
+			
+			jContentPane.add(new JPanel(){
+				private static final long serialVersionUID = 1L;
+				{
+					setLayout(new GridBagLayout());
+					GridBagConstraints c = new GridBagConstraints();
+					
+					c.ipadx = 1;
+					c.ipady = 1;
+					c.gridx = 0;
+					c.gridy = 0;
+					add(new JPanel(), c);
+					
+					c.fill = GridBagConstraints.BOTH;
+					c.gridx = 1;
+					c.gridy = 1;
+					c.weightx = 0.5;
+					add(getTreeScrollPane(), c);
+					
+					c.ipadx = 1;
+					c.ipady = 1;
+					c.gridx = 2;
+					c.gridy = 1;
+					c.weightx = 0;
+					add(new JPanel(), c);
+					
+					c.weighty = 1;
+					c.fill = GridBagConstraints.BOTH;
+					c.gridx = 3;
+					c.gridy = 1;
+					c.weightx = 0.5;
+					add(getFileListScrollPane(), c);
+					
+					c.ipadx = 1;
+					c.ipady = 1;
+					c.gridx = 4;
+					c.gridy = 3;
+					c.weightx = 0;
+					c.weighty = 0;
+					add(new JPanel(), c);
+				}
+			});
+			jContentPane.add(new JPanel(){
+				private static final long serialVersionUID = 1L;
+				{
+					setLayout(new GridBagLayout());
+					GridBagConstraints gridLayout = new GridBagConstraints();
+					
+					gridLayout.ipadx = 1;
+					gridLayout.ipady = 1;
+					gridLayout.gridx = 0;
+					gridLayout.gridy = 1;
+					add(new JPanel(), gridLayout);	
+
+					gridLayout.gridx = 1;
+					gridLayout.gridy = 0;
+					add(getInputCheck(), gridLayout);
+					
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 0;
+					gridLayout.fill = GridBagConstraints.HORIZONTAL;
+				//	gridLayout.ipadx = 200;
+					gridLayout.gridx = 2;
+					gridLayout.gridy = 0;
+					add(getInputSearch(), gridLayout);	
+					
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 0;
+					gridLayout.fill = GridBagConstraints.HORIZONTAL;
+					gridLayout.gridx = 3;
+					gridLayout.gridy = 0;
+					add(getLanguageCombo(), gridLayout);
+					
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 0;
+					gridLayout.fill = GridBagConstraints.HORIZONTAL;
+					gridLayout.gridx = 4;
+					gridLayout.gridy = 0;
+					add(getSearchButton(), gridLayout);
+
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 1;
+					gridLayout.fill = GridBagConstraints.BOTH;
+					gridLayout.gridwidth = 4;
+					gridLayout.gridx = 1;
+					gridLayout.gridy = 2;
+					add(getSubtitleListScrollPane(), gridLayout);
+					
+					gridLayout.ipadx = 1;
+					gridLayout.ipady = 1;
+					gridLayout.gridx = 5;
+					gridLayout.gridy = 3;
+					gridLayout.weightx = 0;
+					gridLayout.weighty = 0;
+					add(new JPanel(), gridLayout);
+					
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 0;
+					gridLayout.gridx = 4;
+					gridLayout.gridy = 4;
+					add(getDownloadButton(), gridLayout);
+					
+					gridLayout.ipadx = 1;
+					gridLayout.ipady = 1;
+					gridLayout.gridx = 0;
+					gridLayout.gridy = 5;
+					add(new JPanel(), gridLayout);
+				}
+			});
 		}
 		return jContentPane;
 	}
@@ -110,7 +212,6 @@ public class GUI extends JFrame {
 	public JCheckBox getInputCheck() {
 		if (inputCheck == null) {
 			inputCheck = new JCheckBox();
-			inputCheck.setBounds(new Rectangle(4, 220, 21, 23));
 		}
 		
 		inputCheck.addItemListener(new ItemListener() {
@@ -138,9 +239,9 @@ public class GUI extends JFrame {
 	public JTextField getInputSearch() {
 		if (inputSearch == null) {
 			inputSearch = new JTextField();
-			inputSearch.setBounds(new Rectangle(28, 222, 237, 19));
 			inputSearch.setText("Search subtitles without file.");
 			inputSearch.setEnabled(false);
+			inputSearch.setMinimumSize(new Dimension(150, 30));
 		}
 		return inputSearch;
 	}
@@ -153,7 +254,6 @@ public class GUI extends JFrame {
 			
 			languageCombo = new JComboBox(langlist);
 			languageCombo.setSelectedIndex(1);
-			languageCombo.setBounds(new Rectangle(275, 220, 120, 22));
 		}
 		
 		return languageCombo;
@@ -163,7 +263,6 @@ public class GUI extends JFrame {
 	private JScrollPane getTreeScrollPane() {
 		if (treeScrollPane == null) {
 			treeScrollPane = new JScrollPane();
-			treeScrollPane.setBounds(new Rectangle(6, 8, 260, 202));
 			treeScrollPane.setViewportView(getFolderTree());
 		}
 		return treeScrollPane;
@@ -287,7 +386,6 @@ public class GUI extends JFrame {
 	private JScrollPane getFileListScrollPane() {
 		if (fileListScrollPane == null) {
 			fileListScrollPane = new JScrollPane();
-			fileListScrollPane.setBounds(new Rectangle(275, 8, 311, 202));
 			fileListScrollPane.setViewportView(getFileList());
 		}
 		return fileListScrollPane;
@@ -297,7 +395,6 @@ public class GUI extends JFrame {
 	private JScrollPane getSubtitleListScrollPane() {
 		if (subtitleListScrollPane == null) {
 			subtitleListScrollPane = new JScrollPane();
-			subtitleListScrollPane.setBounds(new Rectangle(6, 255, 580, 100));
 			subtitleListScrollPane.setViewportView(getSubtitleList());
 		}
 		return subtitleListScrollPane;
@@ -307,7 +404,6 @@ public class GUI extends JFrame {
 	private JButton getSearchButton() {
 		if (searchButton == null) {
 			searchButton = new JButton("Search subtitles");
-			searchButton.setBounds(new Rectangle(406, 219, 180, 24));
 		}
 		
 		searchButton.addMouseListener(new MouseListener() {
@@ -334,7 +430,6 @@ public class GUI extends JFrame {
 	private JButton getDownloadButton() {
 		if (downloadButton == null) {
 			downloadButton = new JButton("Download selected subtitles");
-			downloadButton.setBounds(new Rectangle(383, 364, 203, 26));
 		}
 		
 		downloadButton.addMouseListener(new MouseListener() {
@@ -418,3 +513,4 @@ public class GUI extends JFrame {
 		this.token = token;
 	}
 } 
+
