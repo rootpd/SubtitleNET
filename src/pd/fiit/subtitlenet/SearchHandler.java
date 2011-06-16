@@ -195,7 +195,7 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			sub.setSubDownloadLink(handler.getVariableValue("SubDownloadLink"));
 			sub.setSubFileName(handler.getVariableValue("SubFileName"));
 			sub.setReleaseName(handler.getVariableValue("MovieReleaseName"));
-			sub.setSourceFileName(gui.getFileList().getSelectedValue().toString());
+			if (inputSearch == null) sub.setSourceFileName(gui.getFileList().getSelectedValue().toString());
 			
 			if (sub.getMovieName() != null) 
 				subtitles.add(sub);

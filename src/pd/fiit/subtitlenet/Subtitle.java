@@ -2,19 +2,19 @@ package pd.fiit.subtitlenet;
 
 /** structure for mandatory subtitle information */
 public final class Subtitle {
-	private String movieName;
-	private String movieYear;
-	private String languageName;
-	private String SubActualCD;
-	private String subSumCD;
-	private String subFormat;
-	private String subAddDate;
-	private String subDlCount;
-	private String subDownloadLink;
-	private String subFileName;
-	private String targetFolder;
-	private String releaseName;
-	private String sourceFileName;
+	private String movieName = null;
+	private String movieYear = null;
+	private String languageName = null;
+	private String SubActualCD = null;
+	private String subSumCD = null;
+	private String subFormat = null;
+	private String subAddDate = null;
+	private String subDlCount = null;
+	private String subDownloadLink = null;
+	private String subFileName = null;
+	private String targetFolder = null;
+	private String releaseName = null;
+	private String sourceFileName = null;
 	
 	public String getMovieName() { 
 		return movieName; 
