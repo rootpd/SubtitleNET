@@ -387,13 +387,11 @@ public class GUI extends JFrame {
 		renderer.setOpenIcon(treeIcon);
 		folderTree.setCellRenderer(renderer);
 	}
-
 	/** creates listbox for found video files and adds selection listener */
 	public JList getFileList() {
 		if (fileList == null) {
 			fileListModel = new DefaultListModel();
 			fileList = new JList(fileListModel);
-		}
 		
 		fileList.addMouseListener(new MouseListener() {
 
@@ -404,7 +402,12 @@ public class GUI extends JFrame {
 						JOptionPane.showMessageDialog(null, "You haven't selected any file.");
 						return;
 					}
-				
+					
+					if(fileListModel.get(0).equals("No video files in folder")){
+						JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+						return;
+					}
+
 					initiateSearch();
 				}
 			}
@@ -419,9 +422,11 @@ public class GUI extends JFrame {
 			public void mouseReleased(MouseEvent e) {}
 			
 		});
-		
+		}
 		return fileList;
 	}
+	
+	
 	
 	/** constructor of listbox for found subtitles */
 	private JList getSubtitleList() {
@@ -434,6 +439,7 @@ public class GUI extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				if (e.getClickCount() == 2) {
 					if (getSubtitleListModel().size() == 0 || subtitleList.getSelectedIndex() == -1) {
 						JOptionPane.showMessageDialog(null, "Nothing to download (no subtitles were found or no search performed).", "Error", JOptionPane.ERROR_MESSAGE);
@@ -485,6 +491,10 @@ public class GUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "You haven't selected any file.");
 					return;
 				}
+				if(fileListModel.get(0).equals("No video files in folder")){
+					JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+					return;
+				}
 				initiateSearch();
 			}
 
@@ -530,7 +540,7 @@ public class GUI extends JFrame {
 		working = new WorkingDialog(this);
 		working.getCancelButton().setEnabled(false);
 		working.setVisible(true);
-		
+
 		getLanguage().setSelectedIndex(languageCombo.getSelectedIndex()); // get selected language
 		Callable<List<Subtitle>> task = new SearchHandler(this);
 		
