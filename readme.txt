@@ -38,6 +38,9 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
+v0.9.7a
+znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky
+
 v0.9.6
 opravene rozoznavanie pripon videosuborov (vdaka martingt89)
 pridana moznost zmeny velkosti okna (znova vdaka martingt89), dodatocne este vylepsena
