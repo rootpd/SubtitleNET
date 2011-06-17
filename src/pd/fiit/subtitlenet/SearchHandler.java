@@ -59,7 +59,6 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			return null;
 		} finally {
 			gui.getWorking().setVisible(false);
-			//System.out.println("Nechapem");
 		}
 		
 		return subtitles;

@@ -541,7 +541,7 @@ public class GUI extends JFrame {
 		working = new WorkingDialog(this);
 		working.getCancelButton().setEnabled(false);
 		working.setVisible(true);
-		
+				
 		getLanguage().setSelectedIndex(languageCombo.getSelectedIndex()); // get selected language
 		Callable<List<Subtitle>> task = new SearchHandler(this);
 		

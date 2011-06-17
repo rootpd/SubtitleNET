@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.JDialog;
 import javax.swing.JButton;
+import javax.swing.SwingUtilities;
+
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -44,10 +46,31 @@ public final class WorkingDialog extends JDialog {
 		this.setAlwaysOnTop(true);
 		this.setDefaultCloseOperation(JFrame.ICONIFIED);
 		this.setResizable(false);
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		this.setVisible(true);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.Dialog#setVisible(boolean)
+	 * 
+	 * Set visible for JPanel in swing thread, very 
+	 * important for calling this method from other thread
+	 */
+	@Override
+	public void setVisible(final boolean b) {
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				setVisibleParent(b);
+			}
+		});
+	}
+	
+	private void setVisibleParent(boolean b){
+		super.setVisible(b);
+	}
+	
 	/**
 	 * This method initializes jContentPane
 	 * 
