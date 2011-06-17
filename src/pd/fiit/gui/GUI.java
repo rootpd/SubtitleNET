@@ -404,7 +404,7 @@ public class GUI extends JFrame {
 					}
 					
 					if(fileListModel.get(0).equals("No video files in folder")){
-						JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+						JOptionPane.showMessageDialog(null, "No video file selected, nothing to search for.");
 						return;
 					}
 
@@ -492,7 +492,7 @@ public class GUI extends JFrame {
 					return;
 				}
 				if(fileListModel.get(0).equals("No video files in folder")){
-					JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+					JOptionPane.showMessageDialog(null, "No video file selected, nothing to search for.");
 					return;
 				}
 				initiateSearch();
