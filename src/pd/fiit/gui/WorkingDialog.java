@@ -47,7 +47,6 @@ public final class WorkingDialog extends JDialog {
 		this.setDefaultCloseOperation(JFrame.ICONIFIED);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-		this.setVisible(true);
 	}
 
 	/*
