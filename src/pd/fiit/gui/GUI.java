@@ -1,16 +1,5 @@
 package pd.fiit.gui;
 
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.JTree;
-import javax.swing.UIManager;
-
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,20 +17,30 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.JList;
-import javax.swing.JButton;
 
 import pd.fiit.subtitlenet.DownloadHandler;
 import pd.fiit.subtitlenet.LanguageHandler;
 import pd.fiit.subtitlenet.LogInHandler;
+import pd.fiit.subtitlenet.Main;
 import pd.fiit.subtitlenet.SearchHandler;
 import pd.fiit.subtitlenet.Subtitle;
-import pd.fiit.subtitlenet.Main;
 
 /** main GUI */
 public class GUI extends JFrame {
