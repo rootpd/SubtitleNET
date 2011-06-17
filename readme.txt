@@ -42,6 +42,8 @@ v0.9.6
 opravene rozoznavanie pripon videosuborov (vdaka martingt89)
 pridana moznost zmeny velkosti okna (znova vdaka martingt89), dodatocne este vylepsena
 opravena chyba pri textovom vyhladavani
+opravene namnozenie hladani pri bezhlavom klikani (martingt89)
+znemoznenie vyhladavania "no video files" suboru
 
 v0.9.5
 pridane dalsie informacie vo vysledkoch vyhladavania
