@@ -14,7 +14,6 @@ import javax.swing.UIManager;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -406,7 +405,12 @@ public class GUI extends JFrame {
 						JOptionPane.showMessageDialog(null, "You haven't selected any file.");
 						return;
 					}
-				
+					
+					if(fileListModel.get(0).equals("No video files in folder")){
+						JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+						return;
+					}
+					
 					initiateSearch();
 				}
 			}
@@ -487,6 +491,11 @@ public class GUI extends JFrame {
 					JOptionPane.showMessageDialog(null, "You haven't selected any file.");
 					return;
 				}
+				if(fileListModel.get(0).equals("No video files in folder")){
+					JOptionPane.showMessageDialog(null, "Cannot find subtitles");
+					return;
+				}
+
 				initiateSearch();
 			}
 

@@ -1,6 +1,7 @@
 package pd.fiit.subtitlenet;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -58,6 +59,7 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			return null;
 		} finally {
 			gui.getWorking().setVisible(false);
+			//System.out.println("Nechapem");
 		}
 		
 		return subtitles;
@@ -107,16 +109,20 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	private void hashSearch() {
 		File file = new File(gui.getSelectedFolder() + gui.getFileList().getSelectedValue());
 		
-		String hash = computeFileHash(file); // hash
-		String movieSize = Long.toString(file.length()); // search
-		String response = sendSearchRequest(hash, gui.getToken(), movieSize, "");
-		if (response.indexOf("503 Service Unavailable") != -1 || response == null)
-			return;
+		try{
+			String hash = computeFileHash(file); // hash
+			String movieSize = Long.toString(file.length()); // search
+			String response = sendSearchRequest(hash, gui.getToken(), movieSize, "");
+			if (response.indexOf("503 Service Unavailable") != -1 || response == null)
+				return;
 		
-		ResponseHandler handler = new ResponseHandler(response);
+			ResponseHandler handler = new ResponseHandler(response);
 
-		getSubtitleList(handler); // update
-		showSubtitles();
+			getSubtitleList(handler); // update
+			showSubtitles();
+		}catch(Exception ex){
+			logger.severe("Hash Search exception: "+ex.getMessage());
+		}
 	}
 	
 	/** show found subtitles in listbox */
@@ -236,6 +242,8 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	 * @return List of subtitles meeting given conditions
 	 */
 	private String sendSearchRequest(String hash, String token, String movieSize, String imdbId) {
+		if(hash == null)
+			throw new IllegalArgumentException("Hash mustn't be null");
 		MethodWrapper xmlRequest = new MethodWrapper();
 		String languages = gui.getLanguage().getLanguageIds()[gui.getLanguage().getSelectedIndex()];
 		String response = null;
@@ -257,14 +265,17 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	 * 
 	 * @param file File you want to compute hash from
 	 * @return Hash
+	 * @throws IOException 
 	 */
-	private String computeFileHash(File file) {
+	private String computeFileHash(File file) throws IOException, FileNotFoundException{		
+		if(!file.exists()){
+			throw new FileNotFoundException("File not exist, cannot count hash");
+		}
 		try { // get hash
 			return OpenSubtitlesHasher.computeHash(file);
 		} catch (IOException e1) {
-			logger.severe("could not compute file hash, something wrong with file.");
+			//logger.severe("could not compute file hash, something wrong with file.");
+			throw new IOException("could not compute file hash, something wrong with file.");
 		}
-		
-		return null;
 	}
 }
