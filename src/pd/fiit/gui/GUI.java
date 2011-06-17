@@ -94,116 +94,191 @@ public class GUI extends JFrame {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new GridLayout(2, 1));
-			
-			jContentPane.add(new JPanel(){
+			jContentPane.setLayout(new GridBagLayout());
+			GridBagConstraints c = new GridBagConstraints();
+
+			c.gridx = 0;
+			c.gridy = 0;
+			c.weightx = 1;
+			c.weighty = 2;
+			c.fill = GridBagConstraints.BOTH;
+			jContentPane.add(new JPanel() {
 				private static final long serialVersionUID = 1L;
 				{
 					setLayout(new GridBagLayout());
 					GridBagConstraints c = new GridBagConstraints();
-					
+
 					c.ipadx = 1;
 					c.ipady = 1;
 					c.gridx = 0;
 					c.gridy = 0;
 					add(new JPanel(), c);
-					
+
 					c.fill = GridBagConstraints.BOTH;
+					c.ipadx = 0;
+					c.ipady = 0;
 					c.gridx = 1;
 					c.gridy = 1;
-					c.weightx = 0.5;
+					c.weightx = 1;
 					add(getTreeScrollPane(), c);
-					
+
 					c.ipadx = 1;
 					c.ipady = 1;
 					c.gridx = 2;
 					c.gridy = 1;
 					c.weightx = 0;
 					add(new JPanel(), c);
-					
+
 					c.weighty = 1;
 					c.fill = GridBagConstraints.BOTH;
 					c.gridx = 3;
 					c.gridy = 1;
-					c.weightx = 0.5;
+					c.weightx = 1;
 					add(getFileListScrollPane(), c);
-					
+
+					c.fill = GridBagConstraints.NONE;
+					c.weightx = 0;
+					c.weighty = 0;
 					c.ipadx = 1;
 					c.ipady = 1;
 					c.gridx = 4;
-					c.gridy = 3;
-					c.weightx = 0;
-					c.weighty = 0;
+					c.gridy = 0;
 					add(new JPanel(), c);
+
+					c.gridx = 1;
+					c.gridy = 2;
+					c.fill = GridBagConstraints.HORIZONTAL;
+					add(new JPanel() {
+						private static final long serialVersionUID = 1L;
+						{
+							this.setLayout(new GridBagLayout());
+							GridBagConstraints c = new GridBagConstraints();
+							c.weightx = 0;
+							c.weighty = 0;
+							c.gridx = 0;
+							c.gridy = 1;
+							this.add(getInputCheck(), c);
+
+							c.weightx = 0.1;
+							c.weighty = 0;
+							c.fill = GridBagConstraints.HORIZONTAL;
+							c.gridx = 1;
+							c.gridy = 1;
+							this.add(getInputSearch(), c);
+
+							c.weightx = 0;
+							c.weighty = 0;
+							c.fill = GridBagConstraints.NONE;
+							c.ipadx = 1;
+							c.ipady = 1;
+							c.gridx = 0;
+							c.gridy = 0;
+							this.add(new JPanel(), c);
+						}
+					}, c);
+
+					c.gridx = 3;
+					c.gridy = 2;
+					c.fill = GridBagConstraints.HORIZONTAL;
+					add(new JPanel() {
+						private static final long serialVersionUID = 1L;
+						{
+							this.setLayout(new GridBagLayout());
+							GridBagConstraints c = new GridBagConstraints();
+							c.ipadx = 1;
+							c.ipady = 1;
+							c.gridx = 1;
+							c.gridy = 0;
+							this.add(new JPanel(), c);
+
+							c.weightx = 0.1;
+							c.weighty = 0;
+							c.fill = GridBagConstraints.HORIZONTAL;
+							c.gridx = 0;
+							c.gridy = 1;
+							JComboBox tmp = getLanguageCombo();
+							int hh = (int) tmp.getMinimumSize().getHeight();
+							tmp.setMinimumSize(new Dimension(1, hh));
+							this.add(getLanguageCombo(), c);
+
+							c.weightx = 0.1;
+							c.weighty = 0;
+							c.fill = GridBagConstraints.HORIZONTAL;
+							c.gridx = 2;
+							c.gridy = 1;
+							JButton tmp2 = getSearchButton();
+							tmp2.setMinimumSize(new Dimension(1, hh));
+							this.add(tmp2, c);
+
+							c.weightx = 0;
+							c.weighty = 0;
+							c.fill = GridBagConstraints.NONE;
+							c.ipadx = 1;
+							c.ipady = 1;
+							c.gridx = 0;
+							c.gridy = 0;
+							this.add(new JPanel(), c);
+						}
+					}, c);
 				}
-			});
-			jContentPane.add(new JPanel(){
+			}, c);
+
+			c.gridx = 0;
+			c.gridy = 1;
+			c.weighty = 1;
+			c.weightx = 1;
+			c.fill = GridBagConstraints.BOTH;
+			jContentPane.add(new JPanel() {
 				private static final long serialVersionUID = 1L;
 				{
-					setLayout(new GridBagLayout());
+					this.setLayout(new GridBagLayout());
 					GridBagConstraints gridLayout = new GridBagConstraints();
-					
+
 					gridLayout.ipadx = 1;
 					gridLayout.ipady = 1;
 					gridLayout.gridx = 0;
-					gridLayout.gridy = 1;
-					add(new JPanel(), gridLayout);	
-
-					gridLayout.gridx = 1;
 					gridLayout.gridy = 0;
-					add(getInputCheck(), gridLayout);
-					
-					gridLayout.weightx = 1;
-					gridLayout.weighty = 0;
-					gridLayout.fill = GridBagConstraints.HORIZONTAL;
-				//	gridLayout.ipadx = 200;
-					gridLayout.gridx = 2;
-					gridLayout.gridy = 0;
-					add(getInputSearch(), gridLayout);	
-					
-					gridLayout.weightx = 1;
-					gridLayout.weighty = 0;
-					gridLayout.fill = GridBagConstraints.HORIZONTAL;
-					gridLayout.gridx = 3;
-					gridLayout.gridy = 0;
-					add(getLanguageCombo(), gridLayout);
-					
-					gridLayout.weightx = 1;
-					gridLayout.weighty = 0;
-					gridLayout.fill = GridBagConstraints.HORIZONTAL;
-					gridLayout.gridx = 4;
-					gridLayout.gridy = 0;
-					add(getSearchButton(), gridLayout);
-
-					gridLayout.weightx = 1;
-					gridLayout.weighty = 1;
-					gridLayout.fill = GridBagConstraints.BOTH;
-					gridLayout.gridwidth = 4;
-					gridLayout.gridx = 1;
-					gridLayout.gridy = 2;
-					add(getSubtitleListScrollPane(), gridLayout);
+					this.add(new JPanel(), gridLayout);
 					
 					gridLayout.ipadx = 1;
 					gridLayout.ipady = 1;
-					gridLayout.gridx = 5;
-					gridLayout.gridy = 3;
-					gridLayout.weightx = 0;
-					gridLayout.weighty = 0;
-					add(new JPanel(), gridLayout);
-					
-					gridLayout.weightx = 1;
-					gridLayout.weighty = 0;
-					gridLayout.gridx = 4;
-					gridLayout.gridy = 4;
-					add(getDownloadButton(), gridLayout);
+					gridLayout.gridx = 3;
+					gridLayout.gridy = 2;
+					this.add(new JPanel(), gridLayout);
 					
 					gridLayout.ipadx = 1;
 					gridLayout.ipady = 1;
 					gridLayout.gridx = 0;
 					gridLayout.gridy = 5;
-					add(new JPanel(), gridLayout);
+					this.add(new JPanel(), gridLayout);
+					
+					gridLayout.ipadx = 0;
+					gridLayout.ipady = 0;
+					
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 1;
+					gridLayout.fill = GridBagConstraints.BOTH;
+					gridLayout.gridwidth = 2;
+					gridLayout.gridx = 1;
+					gridLayout.gridy = 1;
+					this.add(getSubtitleListScrollPane(), gridLayout);
+
+					gridLayout.gridwidth = 1;
+					gridLayout.weightx = 1;
+					gridLayout.weighty = 0;
+					gridLayout.gridx = 1;
+					gridLayout.gridy = 2;
+					gridLayout.fill = GridBagConstraints.HORIZONTAL;
+					this.add(new JPanel(), gridLayout);
+
+					gridLayout.weightx = 0;
+					gridLayout.weighty = 0;
+					gridLayout.fill = GridBagConstraints.NONE;
+					gridLayout.gridx = 2;
+					gridLayout.gridy = 3;
+					this.add(getDownloadButton(), gridLayout);
 				}
-			});
+			}, c);
 		}
 		return jContentPane;
 	}
@@ -241,7 +316,6 @@ public class GUI extends JFrame {
 			inputSearch = new JTextField();
 			inputSearch.setText("Search subtitles without file.");
 			inputSearch.setEnabled(false);
-			inputSearch.setMinimumSize(new Dimension(150, 30));
 		}
 		return inputSearch;
 	}
