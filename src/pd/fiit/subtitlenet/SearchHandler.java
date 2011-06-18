@@ -68,7 +68,8 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			logger.severe("Null returned, possible connection error.");
 			return null;
 		} finally {
-			gui.getWorking().setVisible(false);
+			if(!dontPrint)
+				gui.getWorking().setVisible(false);
 		}
 		
 		return subtitles;

@@ -19,7 +19,6 @@ Known Issues:
 =============
 - pri viac CD filmoch treba osobitne hladat a stahovat titulky pre kazde CD. (tahajte HD, nebudete mat taketo problemy)
 - pri textovom vyhladavani serialov to trva strasne dlho kvoli poctu vysledkov (asi), nepouzival by som radsej, hladajte pre konkretny subor.
-- stale nie je moznost zrusit vyhladavanie uprostred (neviem, ci niekedy vobec pribudne, nie je to moc nevyhnutne)
 
 Additional:
 ===========
@@ -40,6 +39,7 @@ Changelog:
 ==========
 v0.9.7a
 znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky
+zrusenie vyhladavania pocas vyhladavania
 
 v0.9.6
 opravene rozoznavanie pripon videosuborov (vdaka martingt89)
