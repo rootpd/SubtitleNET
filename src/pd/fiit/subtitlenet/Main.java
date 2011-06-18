@@ -1,5 +1,7 @@
 package pd.fiit.subtitlenet;
 
+import java.io.File;
+
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -11,7 +13,11 @@ public class Main {
 
 	public static void main(String args[]) {
 		setLookAndFeel();
-		new GUI();
+		if(args.length == 1){
+			new GUI(new File(args[0]));
+		}else{
+			new GUI();
+		}
 	}
 
 	public String getVersion() { return this.version; }
