@@ -1,13 +1,16 @@
 package pd.fiit.reusable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public final class FileHelper {
-	private static Set<String> suffix = null;	
+	private static Set<String> suffix = null;
+	private static final Logger logger = Logger.getLogger(HttpConn.class.getName());
 	private static String extensions[] = { ".3g2", ".3gp", ".3gp2", ".3gpp",
 			".60d", ".ajp", ".asf", ".asx", ".avchd", ".avi", ".bik", ".bix",
 			".box", ".cam", ".dat", ".divx", ".dmf", ".dv", ".dvr-ms", ".evo",
@@ -28,6 +31,13 @@ public final class FileHelper {
 	/** trim file path to directory names */
 	public static List<String> fileToPath(File f){
 		List<String> path = new LinkedList<String>();
+		
+		try {
+			f = new File(f.getCanonicalPath());
+		} catch (IOException e) {
+			logger.warning("File system probabli dosn't suport CanonicalPath or Security error");
+		}
+		
 		if(f.isFile()){
 			f = f.getParentFile();
 		}
