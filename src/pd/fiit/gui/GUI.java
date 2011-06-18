@@ -88,6 +88,7 @@ public class GUI extends JFrame {
 		walkTree(f);
 	}
 	
+	/** Select row in folderTree and fileList be File f */
 	private void walkTree(File f){
 		if(!FileHelper.isSuportedFile(f)) 
 			return;
@@ -97,6 +98,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
+	/** Select line in fileList with text "fileName" */
 	private void selectLine(String fileName){
 		int size = fileList.getModel().getSize();
 		for (int i=0; i<size; i++) {
@@ -108,20 +110,23 @@ public class GUI extends JFrame {
 	private void expandTree(List<String> path){
 		DefaultMutableTreeNode  root;
 		root = (DefaultMutableTreeNode) folderTree.getModel().getRoot();
-		TreePath treePa = new TreePath(root);
-		List<DefaultMutableTreeNode> ppp = new LinkedList<DefaultMutableTreeNode>();
-		ppp.add(root);
-		folderTree.setSelectionPath(treePa);
-		folderTree.expandPath(treePa);
+		TreePath treePath = new TreePath(root);
+		List<DefaultMutableTreeNode> row = new LinkedList<DefaultMutableTreeNode>();
+		row.add(root);
+		folderTree.setSelectionPath(treePath);
+		folderTree.expandPath(treePath);
 		for(String name : path){
-			ppp.add(searchNode(root, name));
-			treePa = new TreePath(ppp.toArray());
+			row.add(searchNode(root, name));
+			treePath = new TreePath(row.toArray());
 			root = searchNode(root, name);
-			folderTree.setSelectionPath(treePa);
-			folderTree.expandPath(treePa);
+			if(root != null){
+				folderTree.setSelectionPath(treePath);
+				folderTree.expandPath(treePath);
+			}
 		}
 	}
 	
+	/** Search for line with name "nodeStr" in subtree "tree" */ 
 	private DefaultMutableTreeNode searchNode(DefaultMutableTreeNode tree, String nodeStr) {
 		DefaultMutableTreeNode node = null;
 		Enumeration<?> enuma = tree.breadthFirstEnumeration();

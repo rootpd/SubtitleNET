@@ -25,7 +25,7 @@ public final class FileHelper {
 			suffix.add(suff);
 	}
 	
-	
+	/** trim file path to directory names */
 	public static List<String> fileToPath(File f){
 		List<String> path = new LinkedList<String>();
 		if(f.isFile()){
@@ -41,6 +41,7 @@ public final class FileHelper {
 		return path;
 	}
 	
+	/** Is File "f" video file? */
 	public static boolean isSuportedFile(File f){
 		if(!f.isFile())
 			return false;
@@ -52,6 +53,7 @@ public final class FileHelper {
 		return false;
 	}
 
+	/** Is Name "fileName" video name? */
 	public static boolean isSuportedName(String fileName) {
 		int begin = fileName.lastIndexOf(".");
 		if(begin < 0)
