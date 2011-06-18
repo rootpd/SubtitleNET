@@ -69,6 +69,8 @@ public class GUI extends JFrame {
 	private String token = null;
 	private Future<String> logInThread = null;
 	private static final Logger logger = Logger.getLogger(GUI.class.getName());
+	
+	private static String Computer_name = "Computer";
 
 	public GUI() {
 		super();
@@ -343,7 +345,7 @@ public class GUI extends JFrame {
 	/** gets tree component and sets the selection listener */
 	private JTree getFolderTree() {
 		if (folderTree == null) {
-			final DefaultMutableTreeNode root = new DefaultMutableTreeNode("Computer"); // default actions
+			final DefaultMutableTreeNode root = new DefaultMutableTreeNode(Computer_name); // default actions
 			File[] roots = File.listRoots();
 			
 			for (File drive : roots) { // add drive letters
@@ -378,7 +380,6 @@ public class GUI extends JFrame {
 		UIManager.put("Tree.collapsedIcon", new ImageIcon(""));
 		
 		folderTree = new JTree(root);
-		
 		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer(); // set icons (same for leaves and folders)
 		ImageIcon treeIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/img/folderIcon.png")));
 		
@@ -393,8 +394,8 @@ public class GUI extends JFrame {
 			fileListModel = new DefaultListModel();
 			fileList = new JList(fileListModel);
 		
+			
 		fileList.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -538,7 +539,7 @@ public class GUI extends JFrame {
 	/** runs search thread */
 	private void initiateSearch() {	
 		working = new WorkingDialog(this);
-		working.getCancelButton().setEnabled(false);
+		//working.getCancelButton().setEnabled(false);
 		working.setVisible(true);
 
 		getLanguage().setSelectedIndex(languageCombo.getSelectedIndex()); // get selected language

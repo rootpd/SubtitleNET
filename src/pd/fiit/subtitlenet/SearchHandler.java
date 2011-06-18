@@ -1,5 +1,7 @@
 package pd.fiit.subtitlenet;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -26,6 +28,7 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	private List<Subtitle> subtitles = null;
 	private GUI gui = null;
 	private static final Logger logger = Logger.getLogger(SearchHandler.class.getName());
+	private volatile boolean dontPrint = false;
 	
 	public SearchHandler (GUI gui) {
 		this.subtitleListModel = gui.getSubtitleListModel();
@@ -42,8 +45,15 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 		try {
 			obtainToken();
 			
-			gui.getWorking().setMessage("Searching subtitles, please wait.");
-//			working.getCancelButton().setEnabled(true);
+			gui.getWorking().setMessage("Searching subtitles, please wait.");			
+			gui.getWorking().getCancelButton().addActionListener(
+				    new ActionListener() {
+				        public void actionPerformed(ActionEvent e) {
+				        	dontPrint = true;
+				        }
+				    }
+				);
+			gui.getWorking().getCancelButton().setEnabled(true);
 			
 			if (gui.getToken() == null)
 				logger.warning("no token obtained.");
@@ -126,6 +136,7 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	
 	/** show found subtitles in listbox */
 	private void showSubtitles() {
+		if(dontPrint) return;
 		subtitleListModel.clear(); // clear the listbox
 		
 		if (subtitles.size() == 0) { // nothing to show

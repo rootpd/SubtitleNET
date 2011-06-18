@@ -107,7 +107,7 @@ public final class WorkingDialog extends JDialog {
 		cancelButton.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO: cancelation possibility
+				setVisible(false);
 			}
 
 			@Override public void mouseEntered(MouseEvent e) {}
