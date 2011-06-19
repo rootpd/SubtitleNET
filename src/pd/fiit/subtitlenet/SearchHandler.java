@@ -164,7 +164,11 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 				"rls: " + release;
 				
 			subtitleListModel.addElement(subtitleInfo);
-			sub.setTargetFolder(gui.getSelectedFolder());
+			
+			if (inputSearch == null)
+				sub.setTargetFolder(gui.getSelectedFolder());
+			else 
+				sub.setTargetFolder(null);
 			
 			try { // mandatory for successful repaint of jlist with results (dont have a clue why)
 				Thread.sleep(10);

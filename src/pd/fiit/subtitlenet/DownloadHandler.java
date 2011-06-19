@@ -16,6 +16,7 @@ import pd.fiit.reusable.Zip;
 @SuppressWarnings("rawtypes")
 /** downloading and unzipping subtitles, .srt files will appear in folder with selected movie */
 public final class DownloadHandler implements Callable {
+	private String targetFolder = null;
 	private List<Subtitle> subtitles;
 	private int index;
 	private static final Logger logger = Logger.getLogger(DownloadHandler.class.getName());
@@ -28,14 +29,27 @@ public final class DownloadHandler implements Callable {
 	@Override
 	public String call() {
 		int sumCD = Integer.parseInt(subtitles.get(index).getSubSumCD());
+		targetFolder = subtitles.get(0).getTargetFolder();
 		
-		if (sumCD != 1 && subtitles.get(0).getTargetFolder() == null)
-			for (int i=0; i<sumCD; i++) {
-				downloadSubtitle(subtitles.get(index+i), true);
-			}
-		else {
-			downloadSubtitle(subtitles.get(index), false);
-		}
+		if (targetFolder == null) { 
+			for (int i=0; i<sumCD; i++)
+				try {
+					downloadSubtitle(subtitles.get(index+i), true);
+				} catch (IOException e) {
+					logger.severe("could not download subtitles, connection failure or just API server online.");
+					JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
+					return null;
+				} 
+		} else
+			try {
+				downloadSubtitle(subtitles.get(index), false);
+			} catch (IOException e) {
+				logger.severe("could not download subtitles, connection failure or just API server online.");
+				JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
+				return null;
+			} 
+			
+		JOptionPane.showMessageDialog(null, "Subtitles successfully downloaded.", "Success", JOptionPane.INFORMATION_MESSAGE);
 		
 		return "OK";
 	}
@@ -45,16 +59,15 @@ public final class DownloadHandler implements Callable {
 	 * @param subtitle > structure with information about subtitle
 	 * @param origFileName > if true, subtitle file name will be retrieved from API server, otherwise movie name will be used
 	 * @return > null if something screwed, proper string otherwise
+	 * @throws IOException 
 	 */
-	private String downloadSubtitle(Subtitle subtitle, boolean origFileName) {
+	private String downloadSubtitle(Subtitle subtitle, boolean origFileName) throws IOException {
 		String downloadLink = subtitle.getSubDownloadLink();
-		
-		String gzFileName = "tmpsub.gz";
-		String targetFolder = subtitle.getTargetFolder();
-		
+		String gzFileName = "tmpsub.gz";		
 		String subFileName = null;
+		
 		if (origFileName)
-			subFileName = subtitle.getSubFileName() + "." + subtitle.getSubFormat();
+			subFileName = subtitle.getSubFileName();
 		else 
 			subFileName = subtitle.getSourceFileName() + "." + subtitle.getSubFormat();
 		
@@ -64,17 +77,9 @@ public final class DownloadHandler implements Callable {
 			targetFolder += System.getProperty("file.separator");
 		}
 		
-		try {
-			HttpConn.HttpDownloadFile(downloadLink, targetFolder + gzFileName);
-		} catch (IOException e) {
-			logger.severe("could not download subtitles, connection failure or just API server online.");
-			JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
-			return null;
-		} 
-		
+		HttpConn.HttpDownloadFile(downloadLink, targetFolder + gzFileName);
 		Zip.unGZip(targetFolder + gzFileName, targetFolder + subFileName, true);
 		
-		JOptionPane.showMessageDialog(null, "Subtitles successfully downloaded.", "Success", JOptionPane.INFORMATION_MESSAGE);
 		logger.log(Level.INFO, "subtitles downloaded to " + targetFolder + subFileName + ".");
 		
 		return "OK";
