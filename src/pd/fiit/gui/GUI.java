@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -111,19 +112,27 @@ public class GUI extends JFrame {
 		DefaultMutableTreeNode  root;
 		root = (DefaultMutableTreeNode) folderTree.getModel().getRoot();
 		TreePath treePath = new TreePath(root);
-		List<DefaultMutableTreeNode> row = new LinkedList<DefaultMutableTreeNode>();
+		final List<DefaultMutableTreeNode> row = new LinkedList<DefaultMutableTreeNode>();
 		row.add(root);
 		folderTree.setSelectionPath(treePath);
 		folderTree.expandPath(treePath);
+		DefaultMutableTreeNode node = null;
 		for(String name : path){
-			row.add(searchNode(root, name));
-			treePath = new TreePath(row.toArray());
-			root = searchNode(root, name);
-			if(root != null){
+			node = searchNode(root, name);
+			if(node != null){
+				row.add(node);
+				treePath = new TreePath(row.toArray());
+				root = node;
 				folderTree.setSelectionPath(treePath);
 				folderTree.expandPath(treePath);
 			}
 		}
+		SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run() {
+				folderTree.scrollPathToVisible(new TreePath(row.toArray()));
+			}
+		});
 	}
 	
 	/** Search for line with name "nodeStr" in subtree "tree" */ 
