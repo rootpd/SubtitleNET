@@ -1,4 +1,4 @@
-SubtitleNET v0.9.7b
+SubtitleNET v0.9.7c
 git@github.com:rootpd/SubtitleNET.git
 
 DOWNLOAD:
@@ -43,10 +43,13 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
-v0.9.7b (za vsetky featury vdaka @martingt89)
-znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky
-zrusenie vyhladavania pocas jeho priebehu
-pridana moznost pridania cesty k suboru cez prikazovy riadok a automatickeho nastavenia cesty v programe (pouzitie popisane hore v info)
+v0.9.7c
+znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky (@martingt89)
+zrusenie vyhladavania pocas jeho priebehu (@martingt89)
+pridana moznost pridania cesty k suboru cez prikazovy riadok a automatickeho nastavenia cesty v programe (pouzitie popisane hore v info) (@martingt89)
+opraveny crash pri textovom vyhladavani kedy sa program snazil ziskat oznaceny subor v liste
+opravene cesty a nazvy titulkov pocas stahovania
+pridane oznamovacie okno pocas stahovania titulkov
 
 v0.9.6
 opravene rozoznavanie pripon videosuborov (vdaka @martingt89)
