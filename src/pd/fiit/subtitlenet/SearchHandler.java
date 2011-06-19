@@ -131,28 +131,25 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	 * @throws ParseException */
 	private void hashSearch() throws ParseException {
 		File file = new File(gui.getSelectedFolder() + gui.getFileList().getSelectedValue());
+		String hash = null;
 		
+		try {
+			hash = computeFileHash(file);
+		} catch (FileNotFoundException e) {
+			logger.severe("can not compute hash, file not found.");
+		} catch (IOException e) {
+			logger.severe("can not compute hash, something wrong with a file");
+		}
 		
-			String hash = null;
-			
-			try {
-				hash = computeFileHash(file);
-			} catch (FileNotFoundException e) {
-				logger.severe("can not compute hash, file not found.");
-			} catch (IOException e) {
-				logger.severe("can not compute hash, something wrong with a file");
-			}
-			
-			String movieSize = Long.toString(file.length()); // search
-			String response = sendSearchRequest(hash, gui.getToken(), movieSize, "");
-			if (response.indexOf("503 Service Unavailable") != -1 || response == null) 
-				throw new ParseException("503 Service Unavailable", 0);
-		
-			ResponseHandler handler = new ResponseHandler(response);
+		String movieSize = Long.toString(file.length()); // search
+		String response = sendSearchRequest(hash, gui.getToken(), movieSize, "");
+		if (response.indexOf("503 Service Unavailable") != -1 || response == null) 
+			throw new ParseException("503 Service Unavailable", 0);
+	
+		ResponseHandler handler = new ResponseHandler(response);
 
-			getSubtitleList(handler); // update
-			showSubtitles();
-		
+		getSubtitleList(handler); // update
+		showSubtitles();
 	}
 	
 	/** show found subtitles in listbox */

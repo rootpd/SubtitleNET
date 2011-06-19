@@ -1,6 +1,11 @@
 SubtitleNET v0.9.7c
 git@github.com:rootpd/SubtitleNET.git
 
+LICENCE:
+========
+SubtitleNET is free software released under GNU/GPL licence.
+http://www.gnu.org/licenses/gpl.html
+
 DOWNLOAD:
 =========
 Pre standardne pouzivanie staci stiahnut subor subtitlenet.jar a spustit (nerozbalovat, spustit!)
