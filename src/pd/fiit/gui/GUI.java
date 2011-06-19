@@ -604,14 +604,12 @@ public class GUI extends JFrame {
 	/** runs search thread */
 	private void initiateSearch() {	
 		working = new WorkingDialog(this);
-		//working.getCancelButton().setEnabled(false);
 		working.setVisible(true);
 
 		getLanguage().setSelectedIndex(languageCombo.getSelectedIndex()); // get selected language
 		Callable<List<Subtitle>> task = new SearchHandler(this);
 		
 		searchThread = exec.submit(task);
-//		working.setThread(searchThread);
 	}
 
 	/** checks for input and starts download thread */
@@ -625,7 +623,7 @@ public class GUI extends JFrame {
 		}
 		
 		@SuppressWarnings("unchecked")
-		Callable<String> task = new DownloadHandler(subtitles, subtitleList.getSelectedIndex());
+		Callable<String> task = new DownloadHandler(subtitles, subtitleList.getSelectedIndex(), working);
 		exec.submit(task);				
 	}
 

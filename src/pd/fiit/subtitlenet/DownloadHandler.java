@@ -12,42 +12,50 @@ import javax.swing.JOptionPane;
 
 import pd.fiit.reusable.HttpConn;
 import pd.fiit.reusable.Zip;
+import pd.fiit.gui.WorkingDialog;
 
 @SuppressWarnings("rawtypes")
 /** downloading and unzipping subtitles, .srt files will appear in folder with selected movie */
 public final class DownloadHandler implements Callable {
+	private WorkingDialog working = null;
 	private String targetFolder = null;
 	private List<Subtitle> subtitles;
 	private int index;
 	private static final Logger logger = Logger.getLogger(DownloadHandler.class.getName());
 	
-	public DownloadHandler (List<Subtitle> subtitles, int index) {
+	public DownloadHandler (List<Subtitle> subtitles, int index, WorkingDialog working) {
 		this.subtitles = subtitles;
 		this.index = index;
+		this.working = working;
 	}
 
 	@Override
 	public String call() {
+		working.setMessage("Downloading subtitles, please wait.");
+		working.getCancelButton().setEnabled(false);
+		
 		int sumCD = Integer.parseInt(subtitles.get(index).getSubSumCD());
 		targetFolder = subtitles.get(0).getTargetFolder();
 		
-		if (targetFolder == null) { 
-			for (int i=0; i<sumCD; i++)
-				try {
+		try {
+			if (targetFolder == null) { // text search
+				for (int i=0; i<sumCD; i++)
 					downloadSubtitle(subtitles.get(index+i), true);
-				} catch (IOException e) {
-					logger.severe("could not download subtitles, connection failure or just API server online.");
-					JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
-					return null;
-				} 
-		} else
-			try {
+			} else { // hash search 
+				working.setVisible(true);
 				downloadSubtitle(subtitles.get(index), false);
-			} catch (IOException e) {
-				logger.severe("could not download subtitles, connection failure or just API server online.");
-				JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
-				return null;
-			} 
+			}
+			
+		} catch (IOException e) {
+			logger.severe("could not download subtitles, connection failure or just API server online.");
+			JOptionPane.showMessageDialog(null, "Could not download subtitles.", "Error", JOptionPane.ERROR_MESSAGE);
+			return null;
+		} catch (NullPointerException e) {
+			logger.info("subtitle download canceled.");
+			return null;
+		} finally {
+			working.setVisible(false);
+		}
 			
 		JOptionPane.showMessageDialog(null, "Subtitles successfully downloaded.", "Success", JOptionPane.INFORMATION_MESSAGE);
 		
@@ -58,10 +66,10 @@ public final class DownloadHandler implements Callable {
 	 * 
 	 * @param subtitle > structure with information about subtitle
 	 * @param origFileName > if true, subtitle file name will be retrieved from API server, otherwise movie name will be used
-	 * @return > null if something screwed, proper string otherwise
+	 * @return > true if search got cancelled while selecting target folder, false otherwise
 	 * @throws IOException 
 	 */
-	private String downloadSubtitle(Subtitle subtitle, boolean origFileName) throws IOException {
+	private void downloadSubtitle(Subtitle subtitle, boolean origFileName) throws IOException {
 		String downloadLink = subtitle.getSubDownloadLink();
 		String gzFileName = "tmpsub.gz";		
 		String subFileName = null;
@@ -72,9 +80,11 @@ public final class DownloadHandler implements Callable {
 			subFileName = subtitle.getSourceFileName() + "." + subtitle.getSubFormat();
 		
 		if (targetFolder == null) {
-			if ((targetFolder = invokeSaveWindow(targetFolder)) == null)
-				return null;
+			if ((targetFolder = invokeSaveWindow()) == null)
+				throw new NullPointerException();
+			
 			targetFolder += System.getProperty("file.separator");
+			working.setVisible(true);
 		}
 		
 		HttpConn.HttpDownloadFile(downloadLink, targetFolder + gzFileName);
@@ -82,10 +92,16 @@ public final class DownloadHandler implements Callable {
 		
 		logger.log(Level.INFO, "subtitles downloaded to " + targetFolder + subFileName + ".");
 		
-		return "OK";
+		return;
 	}
 
-	private String invokeSaveWindow(String targetFolder) {
+	/**
+	 * Invokes window for selecting target folder for subtitles
+	 * if more than 1CD, all subtitles will be saved to selected folder
+	 * 
+	 * @return
+	 */
+	private String invokeSaveWindow() {
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		int returnVal = fc.showSaveDialog(null);
