@@ -1,9 +1,14 @@
 package pd.fiit.gui;
 
 import java.io.File;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -14,19 +19,21 @@ import pd.fiit.reusable.FileHelper;
 /** getting files/folders lists and updating file tree in application */
 public final class TreeHandler {
 	private JTree folderTree;
+	private JList fileList;
 	private DefaultListModel fileListModel;
 	
-	public TreeHandler(JTree folderTree, DefaultListModel fileListModel) {
+	public TreeHandler(JTree folderTree, JList fileList) {
 		setFolderTree(folderTree);
-		setFileListModel(fileListModel);
+		setFileList(fileList);
 	}
 	
 	public void setFolderTree(JTree folderTree) {
 		this.folderTree = folderTree;
 	}
 	
-	public void setFileListModel(DefaultListModel fileListModel) {
-		this.fileListModel = fileListModel;
+	public void setFileList(JList fileList) {
+		this.fileList = fileList;
+		this.fileListModel = (DefaultListModel) fileList.getModel();
 	}
 	
 	/** tells GUI to refresh folder tree so new nodes could appear */
@@ -73,5 +80,72 @@ public final class TreeHandler {
     		newPath = newPath.getParentPath();
 		}
 		return pathToTraverse.toString();
+	}
+	
+	/** Select row in folderTree and fileList be File f */
+	void traverseTreePath(File f){
+		if (!FileHelper.isSuportedFile(f)) 
+			return;
+		
+		expandTreePath(FileHelper.fileToPath(f));
+		if (f.isFile())
+			selectFilelistNode(f.getName());
+	}
+	
+	/** Select line in fileList with text "fileName" */
+	private void selectFilelistNode(String fileName) {
+		int size = fileList.getModel().getSize();
+		
+		for (int i=0; i<size; i++) {
+		     if (fileList.getModel().getElementAt(i).equals(fileName)) {
+		    	 fileList.setSelectedIndex(i);
+		    	 break;
+		     }
+		}
+	}
+	
+	/** expands folder three to desired path */
+	private void expandTreePath(List<String> path) {
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode) folderTree.getModel().getRoot();
+		TreePath treePath = new TreePath(root);
+		
+		final List<DefaultMutableTreeNode> row = new LinkedList<DefaultMutableTreeNode>();
+		row.add(root);
+		
+		folderTree.setSelectionPath(treePath);
+		folderTree.expandPath(treePath);
+		
+		DefaultMutableTreeNode node = null;
+		for(String name : path){
+			node = searchNode(root, name);
+			if(node != null){
+				row.add(node);
+				treePath = new TreePath(row.toArray());
+				root = node;
+				folderTree.setSelectionPath(treePath);
+				folderTree.expandPath(treePath);
+			}
+		}
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				folderTree.scrollPathToVisible(new TreePath(row.toArray()));
+			}
+		});
+	}
+	
+	/** Search for line with name "nodeStr" in subtree "tree" */ 
+	private DefaultMutableTreeNode searchNode(DefaultMutableTreeNode tree, String nodeStr) {
+		DefaultMutableTreeNode node = null;
+		Enumeration<?> enuma = tree.breadthFirstEnumeration();
+
+		while (enuma.hasMoreElements()) {
+			node = (DefaultMutableTreeNode) enuma.nextElement();
+			if (nodeStr.equals(node.getUserObject().toString())) {
+				return node;
+			}
+		}
+		return null;
 	}
 }

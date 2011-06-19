@@ -13,9 +13,9 @@ public class Main {
 
 	public static void main(String args[]) {
 		setLookAndFeel();
-		if(args.length == 1){
+		if (args.length == 1) {
 			new GUI(new File(args[0]));
-		}else{
+		} else {
 			new GUI();
 		}
 	}

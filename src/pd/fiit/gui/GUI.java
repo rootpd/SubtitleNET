@@ -9,8 +9,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
-import java.util.Enumeration;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -31,15 +29,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreePath;
 
-import pd.fiit.reusable.FileHelper;
 import pd.fiit.subtitlenet.DownloadHandler;
 import pd.fiit.subtitlenet.LanguageHandler;
 import pd.fiit.subtitlenet.LogInHandler;
@@ -78,80 +73,23 @@ public class GUI extends JFrame {
 	
 	private static String Computer_name = "Computer";
 
+	/** standard constructor, just paints the window and adds listeners */
 	public GUI() {
 		super();
 		initialize();	
 	}
 	
+	/** extended constructor, traverses to path given as a argv and selects the given file */
 	public GUI(File f) {
 		super();
 		initialize();
-		walkTree(f);
+		new TreeHandler(folderTree, fileList).traverseTreePath(f);
 	}
 	
-	/** Select row in folderTree and fileList be File f */
-	private void walkTree(File f){
-		expandTree(FileHelper.fileToPath(f));
-		if(!FileHelper.isSuportedFile(f)) 
-			return;
-		if(f.isFile()){
-			selectLine(f.getName());
-		}
-	}
-	
-	/** Select line in fileList with text "fileName" */
-	private void selectLine(String fileName){
-		int size = fileList.getModel().getSize();
-		for (int i=0; i<size; i++) {
-		     if(fileList.getModel().getElementAt(i).equals(fileName))
-		    	 fileList.setSelectedIndex(i);
-		}
-	}
-	
-	private void expandTree(List<String> path){
-		DefaultMutableTreeNode  root;
-		root = (DefaultMutableTreeNode) folderTree.getModel().getRoot();
-		TreePath treePath = new TreePath(root);
-		final List<DefaultMutableTreeNode> row = new LinkedList<DefaultMutableTreeNode>();
-		row.add(root);
-		folderTree.setSelectionPath(treePath);
-		folderTree.expandPath(treePath);
-		DefaultMutableTreeNode node = null;
-		for(String name : path){
-			node = searchNode(root, name);
-			if(node != null){
-				row.add(node);
-				treePath = new TreePath(row.toArray());
-				root = node;
-				folderTree.setSelectionPath(treePath);
-				folderTree.expandPath(treePath);
-			}
-		}
-		SwingUtilities.invokeLater(new Runnable(){
-			@Override
-			public void run() {
-				folderTree.scrollPathToVisible(new TreePath(row.toArray()));
-			}
-		});
-	}
-	
-	/** Search for line with name "nodeStr" in subtree "tree" */ 
-	private DefaultMutableTreeNode searchNode(DefaultMutableTreeNode tree, String nodeStr) {
-		DefaultMutableTreeNode node = null;
-		Enumeration<?> enuma = tree.breadthFirstEnumeration();
-
-		while (enuma.hasMoreElements()) {
-			node = (DefaultMutableTreeNode) enuma.nextElement();
-			if (nodeStr.equals(node.getUserObject().toString())) {
-				return node;
-			}
-		}
-		return null;
-	}
 	
 	/** initialization of application window */
 	private void initialize() {
-		this.setSize(613, 440);
+		this.setSize(791, 499);
 		this.setContentPane(getJContentPane());
 		this.setTitle("SubtitleNET " + new Main().getVersion());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -433,7 +371,7 @@ public class GUI extends JFrame {
 			    		folderTree.getLastSelectedPathComponent(); // get selected node
 			    	
 			    	if (folderTree == null) return;
-			    	treeHandle = new TreeHandler(folderTree, fileListModel);
+			    	treeHandle = new TreeHandler(folderTree, fileList);
 
 			    	selectedFolder = treeHandle.getFullFolderPath(e); // get path of node
 			    	treeHandle.getFolderComponents(node, getSelectedFolder()); // traverse it
@@ -667,5 +605,5 @@ public class GUI extends JFrame {
 	public void setToken(String token) {
 		this.token = token;
 	}
-} 
+}  //  @jve:decl-index=0:visual-constraint="10,10" 
 

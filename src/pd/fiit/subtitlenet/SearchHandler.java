@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -44,16 +45,7 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 	public List<Subtitle> call() throws InterruptedException {
 		try {
 			obtainToken();
-			
-			gui.getWorking().setMessage("Searching subtitles, please wait.");			
-			gui.getWorking().getCancelButton().addActionListener(
-				    new ActionListener() {
-				        public void actionPerformed(ActionEvent e) {
-				        	dontPrint = true;
-				        }
-				    }
-				);
-			gui.getWorking().getCancelButton().setEnabled(true);
+			initializeWorkingDialog();
 			
 			if (gui.getToken() == null)
 				logger.warning("no token obtained.");
@@ -63,16 +55,36 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			else 		
 				hashSearch(); // file search
 			
+		} catch (ParseException e) {
+			gui.getWorking().setVisible(false);
+			JOptionPane.showMessageDialog(null, "Service unavailable, please try again later.", "Error", JOptionPane.ERROR_MESSAGE);
+			logger.info("503 service unavailable");
+			return null;
+			
 		} catch (NullPointerException e) {
+			gui.getWorking().setVisible(false);
 			JOptionPane.showMessageDialog(null, "Something went definitely wrong", "Error", JOptionPane.ERROR_MESSAGE);
 			logger.severe("Null returned, possible connection error.");
 			return null;
+			
 		} finally {
 			if(!dontPrint)
 				gui.getWorking().setVisible(false);
 		}
 		
 		return subtitles;
+	}
+
+	private void initializeWorkingDialog() {
+		gui.getWorking().setMessage("Searching subtitles, please wait.");			
+		gui.getWorking().getCancelButton().addActionListener(
+			    new ActionListener() {
+			        public void actionPerformed(ActionEvent e) {
+			        	dontPrint = true;
+			        }
+			    }
+			);
+		gui.getWorking().getCancelButton().setEnabled(true);
 	}
 
 	/** obtains token from Future logInThread, blocking if logInThread is still being processed */
@@ -115,24 +127,32 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 		showSubtitles();
 	}
 
-	/** searching subtitles according to computed hash (file driven search) */
-	private void hashSearch() {
+	/** searching subtitles according to computed hash (file driven search) 
+	 * @throws ParseException */
+	private void hashSearch() throws ParseException {
 		File file = new File(gui.getSelectedFolder() + gui.getFileList().getSelectedValue());
 		
-		try{
-			String hash = computeFileHash(file); // hash
+		
+			String hash = null;
+			
+			try {
+				hash = computeFileHash(file);
+			} catch (FileNotFoundException e) {
+				logger.severe("can not compute hash, file not found.");
+			} catch (IOException e) {
+				logger.severe("can not compute hash, something wrong with a file");
+			}
+			
 			String movieSize = Long.toString(file.length()); // search
 			String response = sendSearchRequest(hash, gui.getToken(), movieSize, "");
-			if (response.indexOf("503 Service Unavailable") != -1 || response == null)
-				return;
+			if (response.indexOf("503 Service Unavailable") != -1 || response == null) 
+				throw new ParseException("503 Service Unavailable", 0);
 		
 			ResponseHandler handler = new ResponseHandler(response);
 
 			getSubtitleList(handler); // update
 			showSubtitles();
-		}catch(Exception ex){
-			logger.severe("Hash Search exception: "+ex.getMessage());
-		}
+		
 	}
 	
 	/** show found subtitles in listbox */

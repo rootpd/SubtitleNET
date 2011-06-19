@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import pd.fiit.reusable.HttpConn;
+
 public final class FileHelper {
 	private static Set<String> suffix = null;
 	private static final Logger logger = Logger.getLogger(HttpConn.class.getName());
@@ -22,9 +24,9 @@ public final class FileHelper {
 			".rmvb", ".swf", ".ts", ".vfw", ".vid", ".video", ".viv", ".vivo",
 			".vob", ".vro", ".wm", ".wmv", ".wmx", ".wrap", ".wvx", ".wx", };
 	
-	static{
+	static {
 		suffix = new HashSet<String>();
-		for(String suff : extensions)
+		for (String suff : extensions)
 			suffix.add(suff);
 	}
 	
@@ -35,41 +37,50 @@ public final class FileHelper {
 		try {
 			f = new File(f.getCanonicalPath());
 		} catch (IOException e) {
-			logger.warning("File system probabli dosn't suport CanonicalPath or Security error");
+			logger.warning("File system probably doesn't support CanonicalPath or Security error, your call ;)");
 		}
 		
-		if(f.isFile()){
+		if (f.isFile()){
 			f = f.getParentFile();
 		}
-		while(f != null && f.isDirectory()){
-			if(f.getName().length() != 0)
+		
+		while (f != null && f.isDirectory()){
+			if (f.getName().length() > 0)
 				path.add(0, f.getName());
 			else
 				path.add(0, f.getPath());
+			
 			f = f.getParentFile();
 		}
+		
 		return path;
 	}
 	
 	/** Is File "f" video file? */
 	public static boolean isSuportedFile(File f){
-		if(!f.isFile())
+		if (!f.isFile())
 			return false;
+		
 		int begin = f.toString().lastIndexOf(".");
-		if(begin < 0)
+		if (begin < 0)
 			return false; 
-		if(suffix.contains(f.toString().substring(begin)))
+		
+		if (suffix.contains(f.toString().substring(begin)))
 			return true;
+		
 		return false;
 	}
 
 	/** Is Name "fileName" video name? */
 	public static boolean isSuportedName(String fileName) {
 		int begin = fileName.lastIndexOf(".");
+		
 		if(begin < 0)
 			return false; 
+		
 		if(suffix.contains(fileName.substring(begin)))
 			return true;
+		
 		return false;
 	}
 }
