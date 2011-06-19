@@ -1,10 +1,11 @@
-SubtitleNET v0.9.6
+SubtitleNET v0.9.7b
 git@github.com:rootpd/SubtitleNET.git
 
 DOWNLOAD:
 =========
 Pre standardne pouzivanie staci stiahnut subor subtitlenet.jar a spustit (nerozbalovat, spustit!)
 https://github.com/rootpd/SubtitleNET/raw/master/subtitlenet.jar
+
 
 Info:
 =====
@@ -13,12 +14,16 @@ Info:
 - Program je sireny "as is", nechodte za mnou, ak vam to nieco odserie, boli ste varovani. Ono tam fakt nic hrozne nie je, ale pre istotu. :)
 - Vsetka komunikacia je len so serverom OpenSubtitles.org, ktory poskytol aj API, za co dakujem. Ak by nieco neslo, tak checknite, ci vobec bezi web.
 
-(... a v podstate je to to iste co uz je v bsplayeri, len na to teraz nepotrebujete 20mb player so spywareom ;) ...)
+Ako pouzit SubtitleNET v prikazovom riadku?
+java -jar subtitlenet.jar [path_to_movie]
+java -jar subtitlenet.jar "E:\Cinema\Mr. Nobody 720p\Mr. Nobody.mkv"
+
 
 Known Issues:
 =============
 - pri viac CD filmoch treba osobitne hladat a stahovat titulky pre kazde CD. (tahajte HD, nebudete mat taketo problemy)
 - pri textovom vyhladavani serialov to trva strasne dlho kvoli poctu vysledkov (asi), nepouzival by som radsej, hladajte pre konkretny subor.
+
 
 Additional:
 ===========
@@ -35,17 +40,19 @@ A vsetky bugy hlaste:
 
 Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forknite si projekt a potom poslite patch :).
 
+
 Changelog: 
 ==========
-v0.9.7a
+v0.9.7b (za vsetky featury vdaka @martingt89)
 znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky
-zrusenie vyhladavania pocas vyhladavania
+zrusenie vyhladavania pocas jeho priebehu
+pridana moznost pridania cesty k suboru cez prikazovy riadok a automatickeho nastavenia cesty v programe (pouzitie popisane hore v info)
 
 v0.9.6
-opravene rozoznavanie pripon videosuborov (vdaka martingt89)
-pridana moznost zmeny velkosti okna (znova vdaka martingt89), dodatocne este vylepsena
+opravene rozoznavanie pripon videosuborov (vdaka @martingt89)
+pridana moznost zmeny velkosti okna (znova vdaka @martingt89), dodatocne este vylepsena
 opravena chyba pri textovom vyhladavani
-opravene namnozenie hladani pri bezhlavom klikani (martingt89)
+opravene namnozenie hladani pri bezhlavom klikani (@martingt89)
 znemoznenie vyhladavania "no video files" suboru
 
 v0.9.5
