@@ -90,9 +90,9 @@ public class GUI extends JFrame {
 	
 	/** Select row in folderTree and fileList be File f */
 	private void walkTree(File f){
+		expandTree(FileHelper.fileToPath(f));
 		if(!FileHelper.isSuportedFile(f)) 
 			return;
-		expandTree(FileHelper.fileToPath(f));
 		if(f.isFile()){
 			selectLine(f.getName());
 		}
