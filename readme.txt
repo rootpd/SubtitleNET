@@ -1,4 +1,4 @@
-SubtitleNET v0.9.7c
+SubtitleNET v0.9.7
 git@github.com:rootpd/SubtitleNET.git
 
 LICENCE:
@@ -22,6 +22,8 @@ Info:
 Ako pouzit SubtitleNET v prikazovom riadku?
 java -jar subtitlenet.jar [path_to_movie]
 java -jar subtitlenet.jar "E:\Cinema\Mr. Nobody 720p\Mr. Nobody.mkv"
+
+V linuxe je moznost nechat otvorit video subor pomocou subtitlenetu, ten hned po spusteni zacne vyhladavat titulky na zvoleny subor.
 
 
 Known Issues:
@@ -48,7 +50,7 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
-v0.9.7c
+v0.9.7
 znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky (@martingt89)
 zrusenie vyhladavania pocas jeho priebehu (@martingt89)
 pridana moznost pridania cesty k suboru cez prikazovy riadok a automatickeho nastavenia cesty v programe (pouzitie popisane hore v info) (@martingt89)

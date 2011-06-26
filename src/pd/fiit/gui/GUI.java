@@ -84,6 +84,7 @@ public class GUI extends JFrame {
 		super();
 		initialize();
 		new TreeHandler(folderTree, fileList).traverseTreePath(f);
+		initiateSearch();
 	}
 	
 	

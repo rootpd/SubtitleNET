@@ -65,7 +65,7 @@ public final class FileHelper {
 		if (begin < 0)
 			return false; 
 		
-		if (suffix.contains(f.toString().substring(begin)))
+		if (suffix.contains(f.getAbsolutePath().substring(begin)))
 			return true;
 		
 		return false;
