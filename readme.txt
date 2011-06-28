@@ -1,5 +1,7 @@
-SubtitleNET v0.9.7
+SubtitleNET v1.0
 git@github.com:rootpd/SubtitleNET.git
+
+by @rootpd (follow me at twitter if you want)
 
 LICENCE:
 ========
@@ -8,78 +10,70 @@ http://www.gnu.org/licenses/gpl.html
 
 DOWNLOAD:
 =========
-Pre standardne pouzivanie staci stiahnut subor subtitlenet.jar a spustit (nerozbalovat, spustit!)
+For standard usage please follow this link:
 https://github.com/rootpd/SubtitleNET/raw/master/subtitlenet.jar
+(do not unpack, just run - if you have winrar it will probably try to unpack)
+
+If you dont have latest version of java, you can download it here
+http://java.com/en/download/index.jsp
 
 
 Info:
 =====
-- Program na zaklade video suboru najde prisluchajuce titulky, t.j. mali by sediet, a ak nesedia, tak je to chyba uploadera titulkov.
-- Titulky mozno vyhladavat aj bez video suboru, aj ked neviem, na co by niekto vobec daco take robil. :)
-- Program je sireny "as is", nechodte za mnou, ak vam to nieco odserie, boli ste varovani. Ono tam fakt nic hrozne nie je, ale pre istotu. :)
-- Vsetka komunikacia je len so serverom OpenSubtitles.org, ktory poskytol aj API, za co dakujem. Ak by nieco neslo, tak checknite, ci vobec bezi web.
+- Software will download subtitles according to video file (subtitles will fit to always video)
+- You can search for subtitles without video file with text search, however there is no guarantee that subtitles will fit.
+- All the comunication is made to OpenSubtitles.org API server.
 
-Ako pouzit SubtitleNET v prikazovom riadku?
+How to run SubtitleNET via command line?
 java -jar subtitlenet.jar [path_to_movie]
 java -jar subtitlenet.jar "E:\Cinema\Mr. Nobody 720p\Mr. Nobody.mkv"
 
-V linuxe je moznost nechat otvorit video subor pomocou subtitlenetu, ten hned po spusteni zacne vyhladavat titulky na zvoleny subor.
+In linux, there is a posibility to let video be opened by SubtitleNET via "open with" system feature. The subtitle search will be started instantly then.
 
 
 Known Issues:
 =============
-- pri viac CD filmoch treba osobitne hladat a stahovat titulky pre kazde CD. (tahajte HD, nebudete mat taketo problemy)
-- pri textovom vyhladavani serialov to trva strasne dlho kvoli poctu vysledkov (asi), nepouzival by som radsej, hladajte pre konkretny subor.
-
-
-Additional:
-===========
-Viaceri ste mi vraveli, ze ho budete chciet, tak aspon pomozte pri testovani.
-Na spravne fungovanie je potrebna najnovsia verzia Javy (Java Runtime Enviroment)
-http://java.com/en/download/index.jsp
-
-Samotny .jar, ktory stiahnete je uz spustitelny, netreba ho rozbalovat
-A vsetky bugy hlaste:
-  fiitkar: dulacka
-  mail: dulacka@gmail.com
-  facebook: facebook.com/dulacka
-  twitter: @rootpd
-
-Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forknite si projekt a potom poslite patch :).
+- When you have movie splitted to more discs, you have to search and download subtitles for every CD 
+- When you do the text search and the count of subtitles is just too big, software looks frozen (do not text search TV Shows)
+- When you do the text search and you want to download subtitles for more CDs, you have to choose the first of CDs in the list, others will be downloaded automatically. However, this is buggy because software counts on the specific order of subtitles and behaves unpredictably if you dont choose the first subtitles in the list or the order is messed up. If you have problems with it, please send me a message.
 
 
 Changelog: 
 ==========
+v1.0
+- improved text search (now you can choose which movie you meant, if the search wasnt accurate e.g. "lord of the rings")
+- added javadoc comments somewhere
+
 v0.9.7
-znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky (@martingt89)
-zrusenie vyhladavania pocas jeho priebehu (@martingt89)
-pridana moznost pridania cesty k suboru cez prikazovy riadok a automatickeho nastavenia cesty v programe (pouzitie popisane hore v info) (@martingt89)
-opraveny crash pri textovom vyhladavani kedy sa program snazil ziskat oznaceny subor v liste
-opravene cesty a nazvy titulkov pocas stahovania
-pridane oznamovacie okno pocas stahovania titulkov
+- main window inactive while search is being made (@martingt89)
+- added possibility to cancel search (@martingt89)
+- added command line option for instant search, more info mentioned before (@martingt89)
+- fixed filelist bug causing crash
+- fixed paths while downloading subtitles
+- added message window while downloading subtitles
 
 v0.9.6
-opravene rozoznavanie pripon videosuborov (vdaka @martingt89)
-pridana moznost zmeny velkosti okna (znova vdaka @martingt89), dodatocne este vylepsena
-opravena chyba pri textovom vyhladavani
-opravene namnozenie hladani pri bezhlavom klikani (@martingt89)
-znemoznenie vyhladavania "no video files" suboru
+- fixed video recognition (@martingt89)
+- added window size change posibility @martingt89)
+- fixed bug at text search
+- fixed multiple searches bug (@martingt89)
+- fixed "no video files" download posibility
 
 v0.9.5
-pridane dalsie informacie vo vysledkoch vyhladavania
-zmenena pevna .srt pripona titulkov na originalnu (nie je dobre spoliehat sa na prehravace)
-opravene null-sized okno a pridana aktualna akcia
-pri non-hash searchi pridane automaticke stiahnutie vsetkych CD (pozor, buggy, spolieha sa na to, ze CD v zozname nasleduju za sebou!!)
+- added more information about found subtitles
+- changed fixed .srt extension to original
+- fixed nullsized message window (now showing what is happening now)
+- added automatic download of other CDs in non-hash search if there is more than one disc
 
 v0.9.4
-mensie bugfixy
+- minor bugfixes
 
 v0.9
-pridane logovanie a osetrovanie exceptionov
-prihlasovanie na API server prebieha na pozadi hned po spusteni programu (rychlejsie vyhladavanie)
-upraveny vypis najdenych titulkov
+- logging and exception handling added
+- signing into API server is now made in background
+- subtitle list changed
 
 v0.8.0.1
-boli problemy s .jarom, niektorym ho nechcelo spustit, toto by to malo vyriesit
+- fixed .jar problems
 
 (created by rootpd as a VPPJ project)
