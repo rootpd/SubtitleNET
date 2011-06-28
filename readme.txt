@@ -41,8 +41,13 @@ Known Issues:
 Changelog: 
 ==========
 v1.0
+<<<<<<< HEAD
 - improved text search (now you can choose which movie you meant, if the search wasnt accurate e.g. "lord of the rings")
 - added javadoc comments somewhere
+=======
+vylepsene textove vyhladavanie (program teraz dava na vyber, ktory film sa ma vyhladat pri neurcitom vyhladavani napr. "lord of the rings")
+miestami doplnene javadoc komentare
+>>>>>>> origin/master
 
 v0.9.7
 - main window inactive while search is being made (@martingt89)
