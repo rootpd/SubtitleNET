@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -50,9 +51,10 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			if (gui.getToken() == null)
 				logger.warning("no token obtained.");
 			
-			if (inputSearch != null) 
+			if (inputSearch != null) {
+				gui.getWorking().setMessage("Searching IMDb for movie.");
 				imdbSearch(); // text search
-			else 		
+			} else 		
 				hashSearch(); // file search
 			
 		} catch (ParseException e) {
@@ -116,7 +118,9 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			
 		ResponseHandler handler = new ResponseHandler(response);
 		
-		String id = handler.getVariableValue("id");
+		String id = null;
+		if ((id = getExactMovieId(handler)) == null) return;
+
 		response = sendSearchRequest("", gui.getToken(), "", id);
 		if (response.indexOf("503 Service Unavailable") != -1 || response == null)
 			return;
@@ -125,6 +129,47 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 		
 		getSubtitleList(handler); // update
 		showSubtitles();
+	}
+
+	/**
+	 * shows list of found movies and returns imdb id of picked movie, null if nothing found or search canceled
+	 * 
+	 * @param handler
+	 * @return
+	 */
+	private String getExactMovieId(ResponseHandler handler) {
+		List<IMDbMovie> movies = getIMDbMovieList(handler); // get matching results
+		if (movies.size() == 0) {
+			JOptionPane.showMessageDialog(null, "No movie found, please try again.", "Info", JOptionPane.INFORMATION_MESSAGE);
+			return null;
+		} else if (movies.size() == 1) {
+			gui.getWorking().setMessage("Searching subtitles, please wait.");
+			return movies.get(0).getId();
+		}
+			
+		HashMap<String, String> map = new HashMap<String, String>();
+		String[] movieNames = new String[movies.size()]; // show matching results
+		for (int i=0; i<movies.size(); i++) {
+			map.put(movies.get(i).getName(), movies.get(i).getId());
+			movieNames[i] = movies.get(i).getName();
+			
+			if (movieNames[i].length() > 128)
+				movieNames[i] = movieNames[i].substring(0, 128) + "...";
+		}
+		
+		String id = null;
+		if (dontPrint == false) {
+			gui.getWorking().setVisible(false);
+			id = (String) JOptionPane.showInputDialog(gui, "Please choose desired movie", "Search", JOptionPane.PLAIN_MESSAGE, null, movieNames, movieNames[0]);
+			gui.getWorking().setMessage("Searching subtitles, please wait.");
+			
+			id = map.get(id);
+			
+			if (id != null) 
+				gui.getWorking().setVisible(true);
+		}
+		
+		return id;
 	}
 
 	/** searching subtitles according to computed hash (file driven search) 
@@ -188,31 +233,13 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 				sub.setTargetFolder(null);
 			
 			try { // mandatory for successful repaint of jlist with results (dont have a clue why)
-				Thread.sleep(10);
+				Thread.sleep(32);
 			} catch (InterruptedException eaten) {}
 		}
 		
 		return;
 	}
 	
-	/** gets ids of found movies according to given string, not used for now, only first search result used 
-	 * 
-	 * @param handler Object containing xml-rpc response to parse
-	 * @return List of imdb ids that fit condition
-	 */
-	@SuppressWarnings("unused")
-	private List<String> getIMDbList(ResponseHandler handler) {
-		List<String> imdbIDs = new LinkedList<String>();
-		
-		while (true) {
-			String id = handler.getVariableValue("id");
-			if (id != null)
-				imdbIDs.add(id);
-			else
-				return imdbIDs;
-		}
-	}
-
 	/** gets mandatory information from server response and puts it into Subtitle structure
 	 * 
 	 * @param handler Object containing xml-rpc response to parse
@@ -239,6 +266,27 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 				subtitles.add(sub);
 			else 
 				return;
+		}
+	}
+	
+	/**
+	 * gets complete list of matching movie titles at imdb according to given string
+	 * 
+	 * @param handler
+	 * @return
+	 */
+	private List<IMDbMovie> getIMDbMovieList(ResponseHandler handler) {
+		List<IMDbMovie> movies = new LinkedList<IMDbMovie>();
+		while (true) {
+			IMDbMovie movie = new IMDbMovie();
+			
+			movie.setId(handler.getVariableValue("id"));
+			movie.setName(handler.getVariableValue("title"));
+			
+			if (movie.getName() != null) 
+				movies.add(movie);
+			else 
+				return movies;
 		}
 	}
 	
@@ -310,4 +358,5 @@ public final class SearchHandler implements Callable<List<Subtitle>> {
 			throw new IOException("could not compute file hash, something wrong with file.");
 		}
 	}
+	
 }

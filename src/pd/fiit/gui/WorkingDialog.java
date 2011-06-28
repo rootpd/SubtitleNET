@@ -29,11 +29,6 @@ public final class WorkingDialog extends JDialog {
 		this.setLocationRelativeTo(gui);
 	}
 	
-//	@SuppressWarnings("rawtypes")
-//	public void setThread(Future thread) {
-//		this.thread = thread;
-//	}
-	
 	public void setMessage(String message) {
 		this.textLabel.setText(message);
 		this.textLabel.repaint();

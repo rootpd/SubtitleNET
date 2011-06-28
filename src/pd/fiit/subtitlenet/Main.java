@@ -9,7 +9,7 @@ import pd.fiit.gui.GUI;
 
 /** you should run this to get proper functionality */
 public class Main {
-	private String version = "v0.9.7";
+	private String version = "v1.0";
 
 	public static void main(String args[]) {
 		setLookAndFeel();
