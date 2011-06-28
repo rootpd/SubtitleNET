@@ -1,4 +1,4 @@
-SubtitleNET v0.9.7
+SubtitleNET v1.0
 git@github.com:rootpd/SubtitleNET.git
 
 LICENCE:
@@ -50,6 +50,10 @@ Program je open-source, pouzivajte ako chcete. Ak mate nejaky dobry napad, forkn
 
 Changelog: 
 ==========
+v1.0
+vylepsene textove vyhladavanie (program teraz dava na vyber, ktory film sa ma vyhladat pri neurcitom vyhladavani napr. "lord of the rings")
+miestami doplnene javadoc komentare
+
 v0.9.7
 znemoznenie kliknutia na hlavne okno ak sa vyhladavaju titulky (@martingt89)
 zrusenie vyhladavania pocas jeho priebehu (@martingt89)
