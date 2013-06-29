@@ -1,15 +1,19 @@
-SubtitleNET v1.0
-git@github.com:rootpd/SubtitleNET.git
+SubtitleNET
+===========
+
+Program downloads subtitles which always fits (multilingual support)
 
 by @rootpd (follow me at twitter if you want)
 
 LICENCE
-=======
+-------
+
 SubtitleNET is free software released under GNU/GPL licence.
 http://www.gnu.org/licenses/gpl.html
 
 DOWNLOAD
-========
+--------
+
 For standard usage please follow this link:
 https://github.com/rootpd/SubtitleNET/raw/master/subtitlenet.jar
 (do not unpack, just run - if you have winrar it will probably try to unpack)
@@ -18,13 +22,14 @@ If you don't have latest version of java, you can download it here
 http://java.com/en/download/index.jsp
 
 Info
-====
+----
+
 - Software will download subtitles according to video file (subtitles will fit to always video)
 - You can search for subtitles without video file with text search, however there is no guarantee that subtitles will fit.
 - All the communication is made to OpenSubtitles.org API server.
 
 How to run SubtitleNET via command line?
-```
+```shell
 java -jar subtitlenet.jar [path_to_movie]
 java -jar subtitlenet.jar "E:\Cinema\Mr. Nobody 720p\Mr. Nobody.mkv"
 ```
@@ -34,18 +39,20 @@ In Linux, there is a possibility to let video be opened by SubtitleNET via "open
 Also, you can use `installer.sh` on Linux, which creates `~/SubtitleNET` directory, downloads `subtitlenet.jar` there,
 creates executable `subtitlenet.sh` and symbolic link of it to `/usr/local/bin/subtitlenet`. Then you can run it as standard
 binary:
-```bash
+```shell
 subtitlenet [path_to_movie]
 ```
 
 Known Issues
-============
+------------
+
 - When you have movie split to more discs, you have to search and download subtitles for every CD
 - When you do the text search and the count of subtitles is just too big, software looks frozen (do not text search TV Shows)
 - When you do the text search and you want to download subtitles for more CDs, you have to choose the first of CDs in the list, others will be downloaded automatically. However, this is buggy because software counts on the specific order of subtitles and behaves unpredictably if you dont choose the first subtitles in the list or the order is messed up. If you have problems with it, please send me a message.
 
 Changelog
-=========
+---------
+
 v1.0
 - improved text search (now you can choose which movie you meant, if the search wasn't accurate e.g. "lord of the rings")
 - added javadoc comments somewhere
