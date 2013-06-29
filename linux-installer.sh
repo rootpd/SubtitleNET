@@ -12,8 +12,6 @@ java -jar $SUBTITLENET_JAR \"\$1\"
 
 chmod +x $SUBTITLENET_HOME/subtitlenet.sh
 
-sudo rm /usr/local/bin/subtitlenet
-
 if [ ! -f /usr/local/bin/subtitlenet ]; then
     sudo ln -s $SUBTITLENET_HOME/subtitlenet.sh /usr/local/bin/subtitlenet
 fi
